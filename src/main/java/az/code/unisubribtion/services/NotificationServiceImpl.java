@@ -16,7 +16,7 @@ public class NotificationServiceImpl implements NotificationService{
 
     @Override
     public Notification createNotification(Long userId, Long subscriptionId, Notification notification) {
-        return notificationRepo.save(notification.toBuilder().userId(userId).subscriptionId(subscriptionId).build());
+        return notificationRepo.save(notification.toBuilder().userId(userId).subscriptionId(subscriptionId).context("Your subscription will be updated in one day").build());
     }
 
     @Override
