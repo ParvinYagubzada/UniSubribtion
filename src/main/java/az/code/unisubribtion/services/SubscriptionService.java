@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface SubscriptionService {
 
-    Paging getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy);
+    Paging<Subscription> getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy);
 
-    Paging getSubscriptionsByGroupId(Long userId, Long groupId, Integer pageNo, Integer pageSize, String sortBy);
+    Paging<Subscription> getSubscriptionsByGroupId(Long userId, Long groupId, Integer pageNo, Integer pageSize, String sortBy);
 
     List<Group> getAllGroups(Long userId);
 
