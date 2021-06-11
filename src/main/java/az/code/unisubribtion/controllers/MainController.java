@@ -154,7 +154,7 @@ public class MainController {
             @RequestParam(defaultValue = "id") String sortBy
     ) {
         return new ResponseEntity<>(notService.getAllNotifications(userId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
-    }//fcit
+    }
 
     @DeleteMapping("/notifications")
     public ResponseEntity<Long> deleteNotificationByUserId(
