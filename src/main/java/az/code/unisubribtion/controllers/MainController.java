@@ -1,5 +1,6 @@
 package az.code.unisubribtion.controllers;
 
+import az.code.unisubribtion.dtos.GroupDTO;
 import az.code.unisubribtion.dtos.UserDTO;
 import az.code.unisubribtion.exceptions.EmailAlreadyExists;
 import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
@@ -56,6 +57,13 @@ public class MainController {
             @RequestParam(defaultValue = "id") String sortBy
     ) {
         return new ResponseEntity<>(subService.getSubscriptionsByGroupId(userId, groupId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/subscriptions")
+    public ResponseEntity<List<GroupDTO>> getGroupDTOS(
+            @RequestParam Long userId
+    ) {
+        return new ResponseEntity<>(subService.getAllGroupDTOs(userId), HttpStatus.OK);
     }
 
     @DeleteMapping("/subscription")
