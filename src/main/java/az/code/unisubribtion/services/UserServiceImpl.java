@@ -5,6 +5,8 @@ import az.code.unisubribtion.exceptions.EmailAlreadyExists;
 import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.repositories.UserRepository;
+import com.github.javafaker.Faker;
+import org.apache.tomcat.jni.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,19 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repo;
 
     public UserServiceImpl(UserRepository repo) {
+
         this.repo = repo;
+
+        Faker faker = new Faker();
+        for (int i = 1; i <= 100; i++) {
+            SubscriptionUser user = new SubscriptionUser();
+            user.setName(faker.name().firstName());
+            user.setUsername(faker.name().username());
+            user.setSurname(faker.name().lastName());
+            user.setEmail(faker.internet().emailAddress());
+            user.setPassword(faker.phoneNumber().cellPhone());
+            user.setActive(true);
+        }
     }
 
     @Override
