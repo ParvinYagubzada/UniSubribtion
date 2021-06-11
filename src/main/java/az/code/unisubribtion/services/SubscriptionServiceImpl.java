@@ -1,7 +1,6 @@
 package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.dtos.GroupDTO;
-import az.code.unisubribtion.models.Category;
 import az.code.unisubribtion.models.Group;
 import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.repositories.GroupRepository;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
@@ -36,12 +34,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return getResult(pageResult);
     }
 
-    @Override
-    public List<Subscription> getSubscriptionsByCategoryId(Long userId, Long categoryId, Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = preparePage(pageNo, pageSize, sortBy);
-        Page<Subscription> pageResult = subRepo.findSubscriptionsByUserIdAndCategoryId(userId, categoryId, paging);
-        return getResult(pageResult);
-    }
+//    @Override
+//    public List<Subscription> getSubscriptionsByCategoryId(Long userId, Long categoryId, Integer pageNo, Integer pageSize, String sortBy) {
+//        Pageable paging = preparePage(pageNo, pageSize, sortBy);
+//        Page<Subscription> pageResult = subRepo.findSubscriptionsByUserIdAndCategoryId(userId, categoryId, paging);
+//        return getResult(pageResult);
+//    }
 
     @Override
     public List<Subscription> getSubscriptionsByGroupId(Long userId, Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
@@ -51,8 +49,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public List<Group> getAllGroups() {
-        return Streamable.of(groupRepo.findAll()).toList();
+    public List<Group> getAllGroups(Long userId) {
+        return Streamable.of(groupRepo.getGroupsByUserId(userId)).toList();
     }
 
     @Override
@@ -79,7 +77,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public Group createGroup(Group group) {
-        return null;
+        return groupRepo.save(group);
     }
 
 
