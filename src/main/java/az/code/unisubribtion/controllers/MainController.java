@@ -17,11 +17,11 @@ import java.util.List;
 public class MainController {
 
     SubscriptionService subService;
-    @Autowired
     UserService service;
 
-    public MainController(SubscriptionService service) {
-        this.subService = service;
+    public MainController(SubscriptionService subService, UserService service) {
+        this.subService = subService;
+        this.service = service;
     }
 
     //    @ExceptionHandler(StudentNotFound.class)
