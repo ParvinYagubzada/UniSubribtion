@@ -46,7 +46,7 @@ public class MainController {
     }
 
     @GetMapping("/subscriptions")
-    public ResponseEntity<Paging> getSubscriptionsByUserId(
+    public ResponseEntity<Paging<Subscription>> getSubscriptionsByUserId(
             @RequestParam Long userId,
             @RequestParam(required = false, defaultValue = "0") Integer pageNo,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
@@ -56,7 +56,7 @@ public class MainController {
     }
 
     @GetMapping("/subscriptions/group")
-    public ResponseEntity<Paging> getSubscriptionsByUserIdAndGroupId(
+    public ResponseEntity<Paging<Subscription>> getSubscriptionsByUserIdAndGroupId(
             @RequestParam Long userId,
             @RequestParam Long groupId,
             @RequestParam(defaultValue = "0") Integer pageNo,
@@ -142,6 +142,8 @@ public class MainController {
     public ResponseEntity<UserDTO> createUser(@RequestBody SubscriptionUser user) throws NoSuchAlgorithmException {
         return new ResponseEntity<>(service.createUser(user), HttpStatus.CREATED);
     }
+
+
 
     @GetMapping("/users/logout")
     public void logout(HttpServletRequest request) {
