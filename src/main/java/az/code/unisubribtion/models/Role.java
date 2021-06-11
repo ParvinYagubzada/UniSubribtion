@@ -4,19 +4,16 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
+@Setter
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "subscriptions", schema = "public")
+@Table(name = "roles", schema = "public")
 @Entity
-public class Subscription {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "subscription_id", referencedColumnName = "id")
-    private Price price;
 }
