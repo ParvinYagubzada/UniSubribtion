@@ -20,4 +20,6 @@ public interface SubscriptionRepository extends PagingAndSortingRepository<Subsc
 
     List<Subscription> findSubscriptionsByUserId(Long id);
 
+    Subscription findSubscriptionById(Long subscriptionId);
+
 }

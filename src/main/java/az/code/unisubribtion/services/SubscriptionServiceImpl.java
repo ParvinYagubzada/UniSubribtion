@@ -97,6 +97,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return groupRepo.save(group);
     }
 
+    @Override
+    public Long stopSubscription(Long subscriptionId) {
+        Subscription result = subRepo.findSubscriptionById(subscriptionId);
+        result.setActive(false);
+        return result.getId();
+    }
+
 
     private Pageable preparePage(Integer pageNo, Integer pageSize, String sortBy) {
         return PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
