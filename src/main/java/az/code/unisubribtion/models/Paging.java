@@ -9,8 +9,8 @@ import java.util.List;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Paging {
+public class Paging<T> {
     private Long pageCount;
     private Long pageSize;
-    private List<Subscription> subscriptions;
+    private List<T> subscriptions;
 }

@@ -148,9 +148,7 @@ public class MainController {
         HttpSession session = request.getSession();
         if (session.getAttribute("userId") != null) {
             session.removeAttribute("userId");
-            System.out.println("deleted");
         }
-        System.out.println("sadas");
     }
 
     @PostMapping("/users/auth")
@@ -158,7 +156,6 @@ public class MainController {
         UserDTO userDTO = service.authUser(user.getUsername(), user.getPassword());
         if (userDTO != null) {
             request.getSession().setAttribute("userId", userDTO);
-            System.out.println("OK");
             return userDTO;
         }
         return UserDTO.builder().username("sada").build();

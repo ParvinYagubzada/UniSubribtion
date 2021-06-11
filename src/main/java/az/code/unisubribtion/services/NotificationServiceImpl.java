@@ -1,11 +1,17 @@
 package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.models.Notification;
+import az.code.unisubribtion.models.Paging;
 import az.code.unisubribtion.repositories.NotificationRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static az.code.unisubribtion.utils.Util.getResult;
+import static az.code.unisubribtion.utils.Util.preparePage;
 
 @Service
 public class NotificationServiceImpl implements NotificationService{
@@ -17,12 +23,22 @@ public class NotificationServiceImpl implements NotificationService{
 
     @Override
     public Notification createNotification(Long userId, Long subscriptionId, Notification notification) {
-        return notificationRepo.save(notification.toBuilder().userId(userId).subscriptionId(subscriptionId).context("Your subscription will be updated in one day").build());
+        return notificationRepo.save(notification.toBuilder()
+                .userId(userId)
+                .subscriptionId(subscriptionId)
+                .context("Your subscription will be updated in one day")
+                .build());
     }
 
     @Override
-    public List<Notification> getAllNotifications(Long userId) {
-        return Streamable.of(notificationRepo.getAllByUserId(userId)).toList();
+    public Paging<Notification> getAllNotifications(Long userId, Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = preparePage(pageNo, pageSize, sortBy);
+        Page<Notification> pageResult = notificationRepo.getAllByUserId(userId, paging);
+        return new Paging<Notification>().toBuilder()
+                .pageCount((long) pageResult.getTotalPages())
+                .pageSize(pageResult.getTotalElements())
+                .subscriptions(getResult(pageResult))
+                .build();
     }
 
     @Override

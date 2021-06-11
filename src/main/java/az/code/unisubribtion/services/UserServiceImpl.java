@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO createUser(SubscriptionUser user) throws NoSuchAlgorithmException {
+    public UserDTO createUser(SubscriptionUser user) {
         if (repo.findUserByEmail(user.getEmail()) != null)
             throw new EmailAlreadyExists();
         if (repo.findUserByUsername(user.getUsername()) != null)
@@ -34,16 +34,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO authUser(String username, String pass) throws NoSuchAlgorithmException {
+    public UserDTO authUser(String username, String pass) {
         SubscriptionUser user = repo.findUserByUsername(username);
-//        System.out.println(user.getUsername());
-//        System.out.println(username);
-//        System.out.println(pass);
-//        System.out.println(user.getPassword());
-        System.out.println(encode(pass));
-        System.out.println(encode(pass));
         if (username.equals(user.getUsername()) && pass.equals(user.getPassword())) {
-            System.out.println("Auth");
             return new UserDTO(repo.save(user.toBuilder()
                     .password(user.getPassword())
                     .build()
@@ -56,8 +49,6 @@ public class UserServiceImpl implements UserService {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(password.getBytes());
         byte[] digest = md.digest();
-        String myHash = DatatypeConverter
-                .printHexBinary(digest).toUpperCase();
-        return myHash;
+        return DatatypeConverter.printHexBinary(digest).toUpperCase();
     }
 }

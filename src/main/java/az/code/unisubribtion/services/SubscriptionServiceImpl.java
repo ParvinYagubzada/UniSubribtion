@@ -22,6 +22,9 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import static az.code.unisubribtion.utils.Util.getResult;
+import static az.code.unisubribtion.utils.Util.preparePage;
+
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
 
@@ -60,10 +63,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Paging getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy) {
+    public Paging<Subscription> getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
         Page<Subscription> pageResult = subRepo.findSubscriptionsByUserId(userId, paging);
-        return Paging.builder()
+        return new Paging<Subscription>().toBuilder()
                 .pageCount((long) pageResult.getTotalPages())
                 .pageSize(pageResult.getTotalElements())
                 .subscriptions(getResult(pageResult))
@@ -71,10 +74,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Paging getSubscriptionsByGroupId(Long userId, Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
+    public Paging<Subscription> getSubscriptionsByGroupId(Long userId, Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
         Page<Subscription> pageResult = subRepo.findSubscriptionsByUserIdAndGroupId(userId, groupId, paging);
-        return Paging.builder()
+        return new Paging<Subscription>().toBuilder()
                 .pageCount((long) pageResult.getTotalPages())
                 .pageSize(pageResult.getTotalElements())
                 .subscriptions(getResult(pageResult))
@@ -153,17 +156,5 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         Subscription result = subRepo.findByUserIdAndId(userId, subscriptionId);
         result.setActive(false);
         return result.getId();
-    }
-
-    private Pageable preparePage(Integer pageNo, Integer pageSize, String sortBy) {
-        return PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-    }
-
-    private List<Subscription> getResult(Page<Subscription> pageResult) {
-        if (pageResult.hasContent()) {
-            return pageResult.getContent();
-        } else {
-            return new LinkedList<>();
-        }
     }
 }
