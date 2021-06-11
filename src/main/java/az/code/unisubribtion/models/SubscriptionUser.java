@@ -22,10 +22,5 @@ public class SubscriptionUser {
     private String surname;
     private String email;
     private Boolean active;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "relation_user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Set<Role> authorities;
 }
 

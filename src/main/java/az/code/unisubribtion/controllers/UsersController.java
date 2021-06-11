@@ -3,6 +3,7 @@ package az.code.unisubribtion.controllers;
 import az.code.unisubribtion.dtos.UserDTO;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.services.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class UsersController {
     }
 
     @RequestMapping(name = "/api/users", method = RequestMethod.POST)
-    public ResponseEntity<UserDTO> createUser(@RequestBody SubscriptionUser user) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody SubscriptionUser user) throws JsonProcessingException {
         return new ResponseEntity<>(service.createUser(user), HttpStatus.CREATED);
     }
 }

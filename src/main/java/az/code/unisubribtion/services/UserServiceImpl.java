@@ -1,6 +1,8 @@
 package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.dtos.UserDTO;
+import az.code.unisubribtion.exceptions.EmailAlreadyExists;
+import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +21,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(SubscriptionUser user) {
-        return new UserDTO(repo.save(user.toBuilder().password(encoder.encode(user.getPassword())).build()));
+        if (repo.findUserByUsername(user.getUsername()) != null)
+            throw new UsernameAlreadyExists();
+        if (repo.findUserByEmail(user.getEmail()) != null)
+            throw new EmailAlreadyExists();
+        return new UserDTO(repo.save(user.toBuilder()
+                .password(encoder.encode(user.getPassword()))
+                .build()
+        ));
     }
 }
