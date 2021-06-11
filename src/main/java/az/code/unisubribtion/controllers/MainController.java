@@ -79,7 +79,7 @@ public class MainController {
     @GetMapping("/groups")
     public ResponseEntity<List<Group>> getAllGroups(
             @RequestParam Long userId
-    ){
+    ) {
         return new ResponseEntity<>(subService.getAllGroups(userId), HttpStatus.OK);
     }
 
@@ -87,7 +87,7 @@ public class MainController {
     public ResponseEntity<Long> deleteGroup(
             @RequestParam Long userId,
             @RequestParam Long groupId
-    ){
+    ) {
         return new ResponseEntity<>(subService.deleteGroup(userId, groupId), HttpStatus.OK);
     }
 
@@ -95,7 +95,7 @@ public class MainController {
     public ResponseEntity<Long> deleteForceGroup(
             @RequestParam Long userId,
             @RequestParam Long groupId
-    ){
+    ) {
         return new ResponseEntity<>(subService.deleteForceGroup(userId, groupId), HttpStatus.OK);
     }
 
@@ -155,6 +155,14 @@ public class MainController {
     ) {
         return new ResponseEntity<>(notService.getAllNotifications(userId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
+
+    @GetMapping("subscription-stop")
+    public ResponseEntity<Long> stopSubscription(
+            @RequestParam Long userId,
+            @RequestParam Long subscriptionId) {
+        return new ResponseEntity<>(subService.stopSubscription(userId, subscriptionId), HttpStatus.OK);
+    }
+
 
     @DeleteMapping("/notifications")
     public ResponseEntity<Long> deleteNotificationByUserId(
