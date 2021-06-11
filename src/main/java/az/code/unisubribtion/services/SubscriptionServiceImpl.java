@@ -71,6 +71,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    public Long deleteByUserIdAndGroupId(Long userId, Long groupId) {
+        Group result = groupRepo.getGroupByUserIdAndGroupId(userId,groupId);
+        groupRepo.deleteByUserIdAndGroupId(userId, groupId);
+        return result.getId();
+    }
+
+
+    @Override
     public Subscription createSubscription(Long userId, Subscription subscription) {
         return subRepo.save(subscription.toBuilder().userId(userId).build());
     }
@@ -89,6 +97,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public Group updateGroup(Long userId, Group group) {
         return groupRepo.save(group);
     }
+
 
     private Pageable preparePage(Integer pageNo, Integer pageSize, String sortBy) {
         return PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
