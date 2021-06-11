@@ -71,15 +71,24 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Subscription createSubscription(Subscription subscription) {
+    public Subscription createSubscription(Long userId, Subscription subscription) {
+        return subRepo.save(subscription.toBuilder().userId(userId).build());
+    }
+
+    @Override
+    public Group createGroup(Long userId, Group group) {
+        return groupRepo.save(group.toBuilder().userId(userId).build());
+    }
+
+    @Override
+    public Subscription updateSubscription(Long userId, Subscription subscription) {
         return subRepo.save(subscription);
     }
 
     @Override
-    public Group createGroup(Group group) {
+    public Group updateGroup(Long userId, Group group) {
         return groupRepo.save(group);
     }
-
 
     private Pageable preparePage(Integer pageNo, Integer pageSize, String sortBy) {
         return PageRequest.of(pageNo, pageSize, Sort.by(sortBy));

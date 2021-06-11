@@ -23,9 +23,6 @@ public class Subscription {
     @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName = "id")
     private Group group;
-    @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private Category category;
     @Column(name = "subscription_id")
     private LocalDateTime subscriptionTime;
     private Boolean hasNotification;
