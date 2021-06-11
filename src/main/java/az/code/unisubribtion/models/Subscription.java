@@ -19,4 +19,12 @@ public class Subscription {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "subscription_id", referencedColumnName = "id")
     private Price price;
+    @Column(name = "user_id")
+    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "subscription_id", referencedColumnName = "id")
+    private Group group;
+    @ManyToOne
+    @JoinColumn(name = "subscription_id", referencedColumnName = "id")
+    private Category category;
 }
