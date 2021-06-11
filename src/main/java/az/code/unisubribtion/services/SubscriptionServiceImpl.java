@@ -2,6 +2,7 @@ package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.dtos.GroupDTO;
 import az.code.unisubribtion.models.Group;
+import az.code.unisubribtion.models.Paging;
 import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.repositories.GroupRepository;
 import az.code.unisubribtion.repositories.SubscriptionRepository;
@@ -27,8 +28,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         this.groupRepo = groupRepo;
     }
 
-    @Override//TODO 1: Change List<Subscription> to SubPage<Subscription>
-    public List<Subscription> getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy) {
+    @Override
+    public Paging getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
         Page<Subscription> pageResult = subRepo.findSubscriptionsByUserId(userId, paging);
         return getResult(pageResult);
@@ -103,7 +104,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         result.setActive(false);
         return result.getId();
     }
-
 
     private Pageable preparePage(Integer pageNo, Integer pageSize, String sortBy) {
         return PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
