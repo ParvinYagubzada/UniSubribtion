@@ -3,6 +3,8 @@ package az.code.unisubribtion.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -27,4 +29,5 @@ public class Subscription {
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
+    private LocalDateTime subscriptionTime;
 }
