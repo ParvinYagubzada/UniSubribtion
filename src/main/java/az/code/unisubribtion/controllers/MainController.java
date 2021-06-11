@@ -129,12 +129,13 @@ public class MainController {
         return new ResponseEntity<>(subService.updateSubscription(userId, subId, sub), HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/groups")
+    @PutMapping("/groups")//TODO: Checked!
     public ResponseEntity<Group> updateGroup(
             @RequestParam Long userId,
+            @RequestParam Long groupId,
             @RequestBody Group group
     ) {
-        return new ResponseEntity<>(subService.updateGroup(userId, group, group), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(subService.updateGroup(userId, groupId, group), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/users")
