@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface SubscriptionService {
 
-    Paging<Subscription> getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy);
+    Paging getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy);
 
     List<Subscription> getSubscriptionsByGroupId(Long userId, Long groupId, Integer pageNo, Integer pageSize, String sortBy);
 

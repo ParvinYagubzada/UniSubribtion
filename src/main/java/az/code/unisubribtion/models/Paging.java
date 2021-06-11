@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Paging {
-    private Integer pageCount;
-    private Integer pageSize;
+    private Long pageCount;
+    private Long pageSize;
     private List<Subscription> subscriptions;
 }

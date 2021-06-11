@@ -4,10 +4,7 @@ import az.code.unisubribtion.dtos.GroupDTO;
 import az.code.unisubribtion.dtos.UserDTO;
 import az.code.unisubribtion.exceptions.EmailAlreadyExists;
 import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
-import az.code.unisubribtion.models.Group;
-import az.code.unisubribtion.models.SimpleUser;
-import az.code.unisubribtion.models.Subscription;
-import az.code.unisubribtion.models.SubscriptionUser;
+import az.code.unisubribtion.models.*;
 import az.code.unisubribtion.services.SubscriptionService;
 import az.code.unisubribtion.services.UserService;
 import org.springframework.http.HttpRequest;
@@ -44,7 +41,7 @@ public class MainController {
     }
 
     @GetMapping("/subscriptions")
-    public ResponseEntity<List<Subscription>> getSubscriptionsByUserId(
+    public ResponseEntity<Paging> getSubscriptionsByUserId(
             @RequestParam Long userId,
             @RequestParam(required = false, defaultValue = "0") Integer pageNo,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,

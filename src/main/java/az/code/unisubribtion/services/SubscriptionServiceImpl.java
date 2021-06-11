@@ -62,10 +62,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public Paging getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
         Page<Subscription> pageResult = subRepo.findSubscriptionsByUserId(userId, paging);
-        return getResult(pageResult);
+        return Paging.builder()
+                .pageCount((long) pageResult.getTotalPages())
+                .pageSize(pageResult.getTotalElements())
+                .subscriptions(getResult(pageResult))
+                .build();
     }
 
-    @Override
+    @Override//TODO 2: Change to Paging class.
     public List<Subscription> getSubscriptionsByGroupId(Long userId, Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
         Page<Subscription> pageResult = subRepo.findSubscriptionsByUserIdAndGroupId(userId, groupId, paging);
