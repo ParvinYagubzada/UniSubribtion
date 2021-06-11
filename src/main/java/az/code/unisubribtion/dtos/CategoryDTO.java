@@ -1,10 +1,8 @@
 package az.code.unisubribtion.dtos;
 
-import az.code.unisubribtion.models.Price;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -14,7 +12,7 @@ import java.util.List;
 public class CategoryDTO {
     private Long id;
     private String name;
-    private List<Price> totalPrices;
+    private Double totalPrices;
     private Integer subscriptionCount;
     private LocalDateTime shortestDeadline;
 }

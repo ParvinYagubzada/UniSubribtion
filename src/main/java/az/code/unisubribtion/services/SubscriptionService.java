@@ -20,7 +20,7 @@ public interface SubscriptionService {
 
 //    List<Category> getAllCategories(Long userId);
 
-    List<GroupDTO> getAllGroupDTOs();
+    List<GroupDTO> getAllGroupDTOs(Long userId);
 
 //    List<CategoryDTO> getAllCategoryDTOs(Long userId);
 

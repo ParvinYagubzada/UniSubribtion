@@ -1,6 +1,7 @@
 package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.dtos.GroupDTO;
+import az.code.unisubribtion.models.Category;
 import az.code.unisubribtion.models.Group;
 import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.repositories.GroupRepository;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,11 +56,20 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public List<GroupDTO> getAllGroupDTOs() {
-        return Streamable.of(groupRepo.findAll())
-                .toList().stream()
-                .map(group -> new GroupDTO())
-                .collect(Collectors.toList());
+    public List<GroupDTO> getAllGroupDTOs(Long userId) {
+        List<GroupDTO> groupDTOS = new LinkedList<>();
+        for (Group group : groupRepo.findAll()) {
+            GroupDTO dto = new GroupDTO();
+            dto.setId(group.getId());
+            dto.setName(group.getName());
+            List<Subscription> subs = subRepo.findSubscriptionsByUserIdAndGroupId(userId, group.getId());
+            dto.setSubscriptionCount(subs.size());
+            subs.sort(Comparator.comparing(Subscription::getSubscriptionTime));
+            dto.setShortestDeadline(subs.get(0).getSubscriptionTime());
+            dto.setTotalPrices(subs.stream().mapToDouble(Subscription::getPrice).sum());
+            groupDTOS.add(dto);
+        }
+        return groupDTOS;
     }
 
     @Override
@@ -70,6 +81,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public Group createGroup(Group group) {
         return null;
     }
+
 
     private Pageable preparePage(Integer pageNo, Integer pageSize, String sortBy) {
         return PageRequest.of(pageNo, pageSize, Sort.by(sortBy));

@@ -17,9 +17,7 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "price_id")
-    private Price price;
+    private Double price;
     @Column(name = "user_id")
     private Long userId;
     @ManyToOne
