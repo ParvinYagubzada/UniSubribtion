@@ -25,7 +25,7 @@ public interface SubscriptionService {
 
     Group createGroup(Long userId, Group group);
 
-    Subscription updateSubscription(Long userId, Subscription subscription);
+    Subscription updateSubscription(Long userId, Long goupId, Subscription subscription);
 
     Group updateGroup(Long userId, Group group);
 
