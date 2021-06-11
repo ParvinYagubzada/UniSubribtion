@@ -14,6 +14,8 @@ import javax.persistence.*;
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String name;
+    private Long id;
+    private String name;
+    @Column(name = "user_id")
+    private Long userId;
 }
