@@ -20,7 +20,7 @@ public class Subscription {
     private Double price;
     @Column(name = "user_id")
     private Long userId;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "group_id", referencedColumnName = "id")
     private Group group;
     @Column(name = "subscription_time")

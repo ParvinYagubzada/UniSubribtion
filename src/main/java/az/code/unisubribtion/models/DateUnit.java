@@ -1,5 +1,5 @@
 package az.code.unisubribtion.models;
 
-enum DateUnit {
+public enum DateUnit {
     YEAR, MONTH, WEEK, DAY
 }
