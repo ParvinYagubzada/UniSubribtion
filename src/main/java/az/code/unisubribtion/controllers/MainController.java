@@ -63,7 +63,15 @@ public class MainController {
             @RequestParam Long userId,
             @RequestParam Long groupId
     ){
-        return new ResponseEntity<>(subService.deleteGroup(userId,groupId), HttpStatus.OK);
+        return new ResponseEntity<>(subService.deleteGroup(userId, groupId), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/subscription")
+    public ResponseEntity<Long> deleteSub(
+            @RequestParam Long userId,
+            @RequestParam Long subId
+    ) {
+        return new ResponseEntity<>(subService.deleteSub(userId, groupId), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/subscriptions")
@@ -90,7 +98,7 @@ public class MainController {
         return new ResponseEntity<>(subService.updateSubscription(userId, sub), HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/subscriptions")
+    @PutMapping("/subscriptions")
     public ResponseEntity<Group> updateGroup(
             @RequestParam Long userId,
             @RequestBody Group group

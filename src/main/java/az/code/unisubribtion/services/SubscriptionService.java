@@ -14,7 +14,6 @@ public interface SubscriptionService {
 
     List<Group> getAllGroups(Long userId);
 
-
     List<GroupDTO> getAllGroupDTOs(Long userId);
 
     Long deleteGroup(Long userId, Long groupId);

@@ -90,8 +90,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return groupRepo.save(group);
     }
 
-
-
     private Pageable preparePage(Integer pageNo, Integer pageSize, String sortBy) {
         return PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
     }
