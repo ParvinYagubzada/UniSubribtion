@@ -8,7 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 
 public interface SubscriptionRepository extends PagingAndSortingRepository<Subscription, Long> {
-    List<Subscription> findSubscriptionsByUserId (Long userId, Pageable pageable);
-    List<Subscription> findSubscriptionsByCategoryId (Long categoryId, Pageable pageable);
-    List<Subscription> findSubscriptionsByGroupId (Long groupId, Pageable pageable);
+    Page<Subscription> findSubscriptionsByUserId (Long userId, Pageable pageable);
+    Page<Subscription> findSubscriptionsByCategoryId (Long categoryId, Pageable pageable);
+    Page<Subscription> findSubscriptionsByGroupId (Long groupId, Pageable pageable);
 }

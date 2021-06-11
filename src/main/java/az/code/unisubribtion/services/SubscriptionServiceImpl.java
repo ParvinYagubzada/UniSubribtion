@@ -30,4 +30,27 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             return new LinkedList<>();
         }
     }
+
+    @Override
+    public List<Subscription> getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Subscription> pageResult = repo.findSubscriptionsByUserId(userId, paging);
+        if (pageResult.hasContent()) {
+            return pageResult.getContent();
+        } else {
+            return new LinkedList<>();
+        }
+    }
+
+    @Override
+    public List<Subscription> getSubscriptionsByCategoryId(Long categoryId, Integer pageNo, Integer pageSize, String sortBy) {
+        return null;
+    }
+
+    @Override
+    public List<Subscription> getSubscriptionsByGroupId(Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
+        return null;
+    }
+
+    private Pageable
 }

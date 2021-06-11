@@ -17,13 +17,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Service("userDetailsService")
+//@Service("userDetailsService")
 public class AuthenticationService implements UserDetailsService {
 
     UserRepository repository;
 
-    public AuthenticationService(UserRepository dao) {
-        this.repository = dao;
+    public AuthenticationService(UserRepository repository) {
+        this.repository = repository;
     }
 
     @Override

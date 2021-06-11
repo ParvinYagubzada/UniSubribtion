@@ -30,7 +30,7 @@ public class SubscriptionsController {
 //        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 //    }
 
-    @GetMapping
+    @GetMapping("/subscriptions")
       public ResponseEntity<List<Subscription>> getStudents(
               @RequestParam(defaultValue = "0") Integer pageNo,
               @RequestParam(defaultValue = "10") Integer pageSize,
