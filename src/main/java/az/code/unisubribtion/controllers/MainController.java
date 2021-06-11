@@ -45,13 +45,11 @@ public class MainController {
 
     @GetMapping("/subscriptions")
     public ResponseEntity<List<Subscription>> getSubscriptionsByUserId(
-            HttpServletRequest request,
             @RequestParam Long userId,
             @RequestParam(required = false, defaultValue = "0") Integer pageNo,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
             @RequestParam(required = false, defaultValue = "id") String sortBy
     ) {
-        System.out.println(request.getRequestURI()+request.getQueryString());
         return new ResponseEntity<>(subService.getSubscriptionsByUserId(userId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
 
