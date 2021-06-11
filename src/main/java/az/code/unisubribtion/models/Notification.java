@@ -16,10 +16,11 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(fetch = FetchType.EAGER)
-    @Column(name = "subscription_id")
-    private Subscription subscription;
-    @Column(name = "user_id")
+    private String name;
+    private String context;
+//    @Column(name = "subscription_id")
+    private Long subscriptionId;
+//    @Column(name = "user_id")
     private Long userId;
     private LocalDateTime time;
 }
