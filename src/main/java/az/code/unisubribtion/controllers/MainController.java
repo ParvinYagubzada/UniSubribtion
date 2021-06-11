@@ -6,6 +6,7 @@ import az.code.unisubribtion.exceptions.EmailAlreadyExists;
 import az.code.unisubribtion.exceptions.GroupIsNotEmpty;
 import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
 import az.code.unisubribtion.models.*;
+import az.code.unisubribtion.services.NotificationService;
 import az.code.unisubribtion.services.SubscriptionService;
 import az.code.unisubribtion.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -24,10 +25,12 @@ public class MainController {
 
     SubscriptionService subService;
     UserService service;
+    NotificationService notService;
 
-    public MainController(SubscriptionService subService, UserService service) {
+    public MainController(SubscriptionService subService, UserService service, NotificationService notService) {
         this.subService = subService;
         this.service = service;
+        this.notService = notService;
     }
 
     @ExceptionHandler(EmailAlreadyExists.class)
@@ -143,7 +146,23 @@ public class MainController {
         return new ResponseEntity<>(service.createUser(user), HttpStatus.CREATED);
     }
 
+    @GetMapping("/notifications")
+    public ResponseEntity<Paging<Notification>> getNotifications(
+            @RequestParam Long userId,
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        return new ResponseEntity<>(notService.getAllNotifications(userId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
+    }//fcit
 
+    @DeleteMapping("/notifications")
+    public ResponseEntity<Long> deleteNotificationByUserId(
+            @RequestParam Long userId,
+            @RequestParam Long notificationId
+    ) {
+        return new ResponseEntity<>(notService.deleteNotification(userId, notificationId), HttpStatus.OK);
+    }
 
     @GetMapping("/users/logout")
     public void logout(HttpServletRequest request) {
