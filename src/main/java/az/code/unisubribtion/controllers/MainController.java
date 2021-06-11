@@ -66,6 +66,11 @@ public class MainController {
         return new ResponseEntity<>(subService.getAllGroupDTOs(userId), HttpStatus.OK);
     }
 
+    @GetMapping("/groups")
+    public ResponseEntity<List<Group>> getAllGroups(@RequestParam Long userId){
+        return new ResponseEntity<>(subService.getAllGroups(userId), HttpStatus.OK);
+    }
+
     @DeleteMapping("/subscription")
     public ResponseEntity<Long> deleteGroup(
             @RequestParam Long userId,
