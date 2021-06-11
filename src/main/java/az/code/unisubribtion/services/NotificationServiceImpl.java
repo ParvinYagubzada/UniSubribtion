@@ -42,8 +42,8 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public Long deleteNotification(Long userId, Long subscriptionId, Long notificationId) {
-        Notification result = notificationRepo.getNotificationByUserIdAndSubscriptionIdAndId(userId, subscriptionId, notificationId);
+    public Long deleteNotification(Long userId, Long notificationId) {
+        Notification result = notificationRepo.getNotificationByUserIdAndId(userId, notificationId);
         notificationRepo.delete(result);
         return result.getId();
     }

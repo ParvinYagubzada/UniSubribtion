@@ -11,5 +11,5 @@ public interface NotificationService {
 
     Paging<Notification> getAllNotifications(Long userId, Integer pageNo, Integer pageSize, String sortBy);
 
-    Long deleteNotification(Long userId, Long subscriptionId, Long notificationId);
+    Long deleteNotification(Long userId, Long notificationId);
 }
