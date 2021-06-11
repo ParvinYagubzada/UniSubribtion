@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "subscriptions", schema = "public")
+@Table(name = "durations", schema = "public")
 @Entity
 public class Duration {
     @Id

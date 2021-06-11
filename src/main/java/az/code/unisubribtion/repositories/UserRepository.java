@@ -1,5 +1,6 @@
 package az.code.unisubribtion.repositories;
 
+import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.models.SubscriptionUser;
 import org.springframework.data.repository.CrudRepository;
 

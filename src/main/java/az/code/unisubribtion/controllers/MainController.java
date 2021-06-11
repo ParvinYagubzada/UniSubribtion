@@ -5,6 +5,7 @@ import az.code.unisubribtion.dtos.UserDTO;
 import az.code.unisubribtion.exceptions.EmailAlreadyExists;
 import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
 import az.code.unisubribtion.models.Group;
+import az.code.unisubribtion.models.SimpleUser;
 import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.services.SubscriptionService;
@@ -13,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -38,7 +42,7 @@ public class MainController {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/subscriptions/")
+    @GetMapping("/subscriptions")
     public ResponseEntity<List<Subscription>> getSubscriptionsByUserId(
             @RequestParam Long userId,
             @RequestParam(defaultValue = "0") Integer pageNo,
@@ -48,7 +52,7 @@ public class MainController {
         return new ResponseEntity<>(subService.getSubscriptionsByUserId(userId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/subscriptions")
+    @GetMapping("/subscriptions/group")
     public ResponseEntity<List<Subscription>> getSubscriptionsByUserIdAndGroupId(
             @RequestParam Long userId,
             @RequestParam Long groupId,
@@ -59,7 +63,7 @@ public class MainController {
         return new ResponseEntity<>(subService.getSubscriptionsByGroupId(userId, groupId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/groups")
+    @GetMapping("/groups/dto")
     public ResponseEntity<List<GroupDTO>> getGroupDTOS(
             @RequestParam Long userId
     ) {
@@ -67,7 +71,9 @@ public class MainController {
     }
 
     @GetMapping("/groups")
-    public ResponseEntity<List<Group>> getAllGroups(@RequestParam Long userId){
+    public ResponseEntity<List<Group>> getAllGroups(
+            @RequestParam Long userId
+    ){
         return new ResponseEntity<>(subService.getAllGroups(userId), HttpStatus.OK);
     }
 
@@ -79,7 +85,7 @@ public class MainController {
         return new ResponseEntity<>(subService.deleteGroup(userId, groupId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/subscription")
+    @DeleteMapping("/subscriptions")
     public ResponseEntity<Long> deleteSub(
             @RequestParam Long userId,
             @RequestParam Long subId
@@ -120,7 +126,26 @@ public class MainController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<UserDTO> createUser(@RequestBody SubscriptionUser user) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody SubscriptionUser user) throws NoSuchAlgorithmException {
         return new ResponseEntity<>(service.createUser(user), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/users/logout")
+    public void logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("userId") != null) {
+            session.removeAttribute("userId");
+        }
+    }
+
+    @PostMapping("/users/auth")
+    public UserDTO login(HttpServletRequest request, @RequestBody SimpleUser user) throws NoSuchAlgorithmException {
+        UserDTO userDTO = service.authUser(user.getUsername(), user.getPassword());
+        if (userDTO != null) {
+            request.getSession().setAttribute("userId", userDTO);
+            System.out.println("OK");
+            return userDTO;
+        }
+        return UserDTO.builder().username("sada").build();
     }
 }

@@ -23,7 +23,7 @@ public class Subscription {
     @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName = "id")
     private Group group;
-    @Column(name = "subscription_id")
+    @Column(name = "subscription_time")
     private LocalDateTime subscriptionTime;
     private Boolean hasNotification;
     private Boolean active;
