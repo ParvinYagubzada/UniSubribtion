@@ -1,12 +1,12 @@
 package az.code.unisubribtion.controllers;
 
 import az.code.unisubribtion.dtos.UserDTO;
+import az.code.unisubribtion.exceptions.EmailAlreadyExists;
 import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
 import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.services.SubscriptionService;
 import az.code.unisubribtion.services.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,18 +26,18 @@ public class MainController {
         this.service = service;
     }
 
-    //    @ExceptionHandler(StudentNotFound.class)
-//    public ResponseEntity<String> handleNotFound(StudentNotFound e) {
-//        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-//    }
-//
+    @ExceptionHandler(EmailAlreadyExists.class)
+    public ResponseEntity<String> handleNotFound(EmailAlreadyExists e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(UsernameAlreadyExists.class)
     public ResponseEntity<String> handleNotFound(UsernameAlreadyExists e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.FOUND);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/subscriptions")
-    public ResponseEntity<List<Subscription>> getSubscription(
+    public ResponseEntity<List<Subscription>> getSubscriptions(
             @RequestParam Long id,
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
