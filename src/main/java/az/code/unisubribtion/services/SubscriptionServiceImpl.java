@@ -1,6 +1,7 @@
 package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.dtos.GroupDTO;
+import az.code.unisubribtion.exceptions.GroupIsNotEmpty;
 import az.code.unisubribtion.models.DateUnit;
 import az.code.unisubribtion.models.Duration;
 import az.code.unisubribtion.models.Group;
@@ -69,7 +70,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                 .build();
     }
 
-    @Override//TODO 2: Change to Paging class.
+    @Override
     public Paging getSubscriptionsByGroupId(Long userId, Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
         Page<Subscription> pageResult = subRepo.findSubscriptionsByUserIdAndGroupId(userId, groupId, paging);
@@ -88,7 +89,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public List<GroupDTO> getAllGroupDTOs(Long userId) {
         List<GroupDTO> groupDTOS = new LinkedList<>();
-        for (Group group : groupRepo.findAll()) {
+        for (Group group : groupRepo.getGroupsByUserId(userId)) {
             GroupDTO dto = new GroupDTO();
             dto.setId(group.getId());
             dto.setName(group.getName());
@@ -112,6 +113,17 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public Long deleteGroup(Long userId, Long groupId) {
         Group result = groupRepo.getGroupByUserIdAndId(userId,groupId);
+        if (subRepo.findSubscriptionsByUserIdAndGroupId(userId, groupId).size() == 0) {
+            groupRepo.delete(result);
+            return result.getId();
+        }
+        throw new GroupIsNotEmpty();
+    }
+
+    @Override
+    public Long deleteForceGroup(Long userId, Long groupId) {
+        Group result = groupRepo.getGroupByUserIdAndId(userId,groupId);
+        subRepo.deleteAll(subRepo.findSubscriptionsByUserIdAndGroupId(userId, groupId));
         groupRepo.delete(result);
         return result.getId();
     }

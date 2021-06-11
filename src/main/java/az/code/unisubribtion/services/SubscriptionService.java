@@ -31,4 +31,5 @@ public interface SubscriptionService {
 
     Long stopSubscription(Long userId, Long subscriptionId);
 
+    Long deleteForceGroup(Long userId, Long groupId);
 }

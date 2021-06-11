@@ -3,6 +3,7 @@ package az.code.unisubribtion.controllers;
 import az.code.unisubribtion.dtos.GroupDTO;
 import az.code.unisubribtion.dtos.UserDTO;
 import az.code.unisubribtion.exceptions.EmailAlreadyExists;
+import az.code.unisubribtion.exceptions.GroupIsNotEmpty;
 import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
 import az.code.unisubribtion.models.*;
 import az.code.unisubribtion.services.SubscriptionService;
@@ -40,7 +41,12 @@ public class MainController {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/subscriptions")
+    @ExceptionHandler(GroupIsNotEmpty.class)
+    public ResponseEntity<String> handleGroupNotEmpty(GroupIsNotEmpty e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @GetMapping("/subscriptions")//TODO: Checked!
     public ResponseEntity<Paging> getSubscriptionsByUserId(
             @RequestParam Long userId,
             @RequestParam(required = false, defaultValue = "0") Integer pageNo,
@@ -50,7 +56,7 @@ public class MainController {
         return new ResponseEntity<>(subService.getSubscriptionsByUserId(userId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/subscriptions/group")
+    @GetMapping("/subscriptions/group")//TODO: Checked!
     public ResponseEntity<Paging> getSubscriptionsByUserIdAndGroupId(
             @RequestParam Long userId,
             @RequestParam Long groupId,
@@ -61,21 +67,21 @@ public class MainController {
         return new ResponseEntity<>(subService.getSubscriptionsByGroupId(userId, groupId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/groups/dto")
+    @GetMapping("/groups/dto")//TODO: Checked!
     public ResponseEntity<List<GroupDTO>> getGroupDTOS(
             @RequestParam Long userId
     ) {
         return new ResponseEntity<>(subService.getAllGroupDTOs(userId), HttpStatus.OK);
     }
 
-    @GetMapping("/groups")
+    @GetMapping("/groups")//TODO: Checked!
     public ResponseEntity<List<Group>> getAllGroups(
             @RequestParam Long userId
     ){
         return new ResponseEntity<>(subService.getAllGroups(userId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/groups")
+    @DeleteMapping("/groups")//TODO: Checked!
     public ResponseEntity<Long> deleteGroup(
             @RequestParam Long userId,
             @RequestParam Long groupId
@@ -83,7 +89,15 @@ public class MainController {
         return new ResponseEntity<>(subService.deleteGroup(userId, groupId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/subscriptions")
+    @DeleteMapping("/groups/force")//TODO: Checked!
+    public ResponseEntity<Long> deleteForceGroup(
+            @RequestParam Long userId,
+            @RequestParam Long groupId
+    ){
+        return new ResponseEntity<>(subService.deleteForceGroup(userId, groupId), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/subscriptions")//TODO: Checked!
     public ResponseEntity<Long> deleteSub(
             @RequestParam Long userId,
             @RequestParam Long subId
@@ -91,7 +105,7 @@ public class MainController {
         return new ResponseEntity<>(subService.deleteSub(userId, subId), HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/subscriptions")
+    @PostMapping("/subscriptions")//TODO: Checked!
     public ResponseEntity<Subscription> createSub(
             @RequestParam Long userId,
             @RequestBody Subscription sub
