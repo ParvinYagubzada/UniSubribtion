@@ -1,4 +1,9 @@
 package az.code.unisubribtion.services;
 
-public class UserService {
+import az.code.unisubribtion.dtos.UserDTO;
+import az.code.unisubribtion.models.SubscriptionUser;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+public interface UserService {
+    UserDTO insertUser(PasswordEncoder passwordEncoder, SubscriptionUser user);
 }

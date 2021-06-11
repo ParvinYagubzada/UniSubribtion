@@ -22,6 +22,3 @@ public class Duration {
     DateUnit unit;
 }
 
-enum DateUnit {
-    YEAR, MONTH, WEEK, DAY
-}

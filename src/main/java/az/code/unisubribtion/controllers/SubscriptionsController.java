@@ -32,10 +32,11 @@ public class SubscriptionsController {
 
     @GetMapping("/subscriptions")
       public ResponseEntity<List<Subscription>> getStudents(
+              @RequestParam Long id,
               @RequestParam(defaultValue = "0") Integer pageNo,
               @RequestParam(defaultValue = "10") Integer pageSize,
               @RequestParam(defaultValue = "id") String sortBy
     ) {
-        return new ResponseEntity<>(service.getAllSubscriptions(pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(service.getSubscriptionsByUserId(id, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
 }
