@@ -51,7 +51,7 @@ public class MainController {
     }
 
     @GetMapping("/subscriptions/group")
-    public ResponseEntity<List<Subscription>> getSubscriptionsByUserIdAndGroupId(
+    public ResponseEntity<Paging> getSubscriptionsByUserIdAndGroupId(
             @RequestParam Long userId,
             @RequestParam Long groupId,
             @RequestParam(defaultValue = "0") Integer pageNo,
