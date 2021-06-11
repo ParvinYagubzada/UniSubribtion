@@ -98,8 +98,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Long stopSubscription(Long subscriptionId) {
-        Subscription result = subRepo.findSubscriptionById(subscriptionId);
+    public Long stopSubscription(Long userId, Long subscriptionId) {
+        Subscription result = subRepo.findByUserIdAndId(userId, subscriptionId);
         result.setActive(false);
         return result.getId();
     }

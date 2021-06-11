@@ -10,6 +10,7 @@ import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.services.SubscriptionService;
 import az.code.unisubribtion.services.UserService;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,11 +45,13 @@ public class MainController {
 
     @GetMapping("/subscriptions")
     public ResponseEntity<List<Subscription>> getSubscriptionsByUserId(
+            HttpServletRequest request,
             @RequestParam Long userId,
-            @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy
+            @RequestParam(required = false, defaultValue = "0") Integer pageNo,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false, defaultValue = "id") String sortBy
     ) {
+        System.out.println(request.getRequestURI()+request.getQueryString());
         return new ResponseEntity<>(subService.getSubscriptionsByUserId(userId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
 
@@ -135,7 +138,9 @@ public class MainController {
         HttpSession session = request.getSession();
         if (session.getAttribute("userId") != null) {
             session.removeAttribute("userId");
+            System.out.println("deleted");
         }
+        System.out.println("sadas");
     }
 
     @PostMapping("/users/auth")

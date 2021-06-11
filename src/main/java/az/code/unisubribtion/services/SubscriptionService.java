@@ -28,5 +28,5 @@ public interface SubscriptionService {
 
     Group updateGroup(Long userId, Group group);
 
-    Long stopSubscription(Long subscriptionId);
+    Long stopSubscription(Long userId, Long subscriptionId);
 }

@@ -18,7 +18,6 @@ public class Duration {
     Long id;
     Long value;
     @Enumerated(EnumType.STRING)
-    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     DateUnit unit;
 }
 

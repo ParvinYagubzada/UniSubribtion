@@ -3,16 +3,17 @@ package az.code.unisubribtion.services;
 import az.code.unisubribtion.models.Notification;
 import az.code.unisubribtion.repositories.NotificationRepository;
 import org.springframework.data.util.Streamable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class NotificationServiceImpl implements NotificationService{
     NotificationRepository notificationRepo;
 
     public NotificationServiceImpl(NotificationRepository notificationRepo) {
         this.notificationRepo = notificationRepo;
     }
-
 
     @Override
     public Notification createNotification(Long userId, Long subscriptionId, Notification notification) {
@@ -26,7 +27,7 @@ public class NotificationServiceImpl implements NotificationService{
 
     @Override
     public Long deleteNotification(Long userId, Long subscriptionId, Long notificationId) {
-        Notification result = notificationRepo.getNotificationByUserIdAndSubscriptionIdAAndId(userId, subscriptionId, notificationId);
+        Notification result = notificationRepo.getNotificationByUserIdAndSubscriptionIdAndId(userId, subscriptionId, notificationId);
         notificationRepo.delete(result);
         return result.getId();
     }
