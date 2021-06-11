@@ -59,7 +59,7 @@ public class MainController {
         return new ResponseEntity<>(subService.getSubscriptionsByGroupId(userId, groupId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/subscriptions")
+    @GetMapping("/groups")
     public ResponseEntity<List<GroupDTO>> getGroupDTOS(
             @RequestParam Long userId
     ) {
@@ -71,7 +71,7 @@ public class MainController {
         return new ResponseEntity<>(subService.getAllGroups(userId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/subscription")
+    @DeleteMapping("/groups")
     public ResponseEntity<Long> deleteGroup(
             @RequestParam Long userId,
             @RequestParam Long groupId
@@ -95,7 +95,7 @@ public class MainController {
         return new ResponseEntity<>(subService.createSubscription(userId, sub), HttpStatus.CREATED);
     }
 
-    @PostMapping("/subscriptions")
+    @PostMapping("/groups")
     public ResponseEntity<Group> createGroup(
             @RequestParam Long userId,
             @RequestBody Group group
@@ -111,7 +111,7 @@ public class MainController {
         return new ResponseEntity<>(subService.updateSubscription(userId, sub), HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/subscriptions")
+    @PutMapping("/groups")
     public ResponseEntity<Group> updateGroup(
             @RequestParam Long userId,
             @RequestBody Group group
