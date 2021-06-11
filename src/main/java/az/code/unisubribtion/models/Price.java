@@ -15,6 +15,6 @@ public class Price {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String value;
-    private String type;
+    private String amount;
+    private String currency;
 }

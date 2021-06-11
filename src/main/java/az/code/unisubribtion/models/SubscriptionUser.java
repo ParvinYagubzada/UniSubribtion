@@ -18,6 +18,9 @@ public class SubscriptionUser {
     private Long id;
     private String username;
     private String password;
+    private String name;
+    private String surname;
+    private String email;
     private Boolean active;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "relation_user_role",
