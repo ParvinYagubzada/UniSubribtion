@@ -27,7 +27,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         this.groupRepo = groupRepo;
     }
 
-    @Override
+    @Override//TODO 1: Change List<Subscription> to SubPage<Subscription>
     public List<Subscription> getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
         Page<Subscription> pageResult = subRepo.findSubscriptionsByUserId(userId, paging);
