@@ -48,6 +48,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return getResult(pageResult);
     }
 
+
     @Override
     public List<Group> getAllGroups(Long userId) {
         return Streamable.of(groupRepo.getGroupsByUserId(userId)).toList();
@@ -69,6 +70,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
         return groupDTOS;
     }
+
+    @Override
+    public Long deleteByUserIdAndGroupId(Long userId, Long groupId) {
+        Group result = groupRepo.getGroupByUserIdAndGroupId(userId,groupId);
+        groupRepo.deleteByUserIdAndGroupId(userId, groupId);
+        return result.getId();
+    }
+
 
     @Override
     public Subscription createSubscription(Subscription subscription) {

@@ -20,6 +20,8 @@ public interface SubscriptionService {
 
     List<GroupDTO> getAllGroupDTOs(Long userId);
 
+    Long deleteByUserIdAndGroupId(Long userId, Long groupId);
+
 //    List<CategoryDTO> getAllCategoryDTOs(Long userId);
 
     Subscription createSubscription(Subscription subscription);

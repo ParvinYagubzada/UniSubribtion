@@ -46,16 +46,16 @@ public class MainController {
         return new ResponseEntity<>(subService.getSubscriptionsByUserId(userId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/subscriptions")
-    public ResponseEntity<List<Subscription>> getSubscriptionsByUserIdAndCategoryId(
-            @RequestParam Long userId,
-            @RequestParam Long categoryId,
-            @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy
-    ) {
-        return new ResponseEntity<>(subService.getSubscriptionsByCategoryId(userId, categoryId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
-    }
+//    @GetMapping("/subscriptions")
+//    public ResponseEntity<List<Subscription>> getSubscriptionsByUserIdAndCategoryId(
+//            @RequestParam Long userId,
+//            @RequestParam Long categoryId,
+//            @RequestParam(defaultValue = "0") Integer pageNo,
+//            @RequestParam(defaultValue = "10") Integer pageSize,
+//            @RequestParam(defaultValue = "id") String sortBy
+//    ) {
+////        return new ResponseEntity<>(subService.getSubscriptionsByCategoryId(userId, categoryId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
+//    }
 
     @GetMapping("/subscriptions")
     public ResponseEntity<List<Subscription>> getSubscriptionsByUserIdAndGroupId(
@@ -66,6 +66,14 @@ public class MainController {
             @RequestParam(defaultValue = "id") String sortBy
     ) {
         return new ResponseEntity<>(subService.getSubscriptionsByGroupId(userId, groupId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/subscription")
+    public ResponseEntity<Long> deleteGroupByUserIdAndGroupId(
+            @RequestParam Long userId,
+            @RequestParam Long groupId
+    ){
+        return new ResponseEntity<>(subService.deleteByUserIdAndGroupId(userId,groupId), HttpStatus.OK);
     }
 
     @PostMapping("/users")
