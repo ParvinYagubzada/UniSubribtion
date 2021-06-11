@@ -113,7 +113,7 @@ public class MainController {
         return new ResponseEntity<>(subService.createSubscription(userId, sub), HttpStatus.CREATED);
     }
 
-    @PostMapping("/groups")
+    @PostMapping("/groups")//TODO: Checked!
     public ResponseEntity<Group> createGroup(
             @RequestParam Long userId,
             @RequestBody Group group
@@ -121,12 +121,13 @@ public class MainController {
         return new ResponseEntity<>(subService.createGroup(userId, group), HttpStatus.CREATED);
     }
 
-    @PutMapping("/subscriptions")
+    @PutMapping("/subscriptions")//TODO: Checked!
     public ResponseEntity<Subscription> updateSub(
             @RequestParam Long userId,
+            @RequestParam Long groupId,
             @RequestBody Subscription sub
     ) {
-        return new ResponseEntity<>(subService.updateSubscription(userId, sub), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(subService.updateSubscription(userId, groupId, sub), HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/groups")

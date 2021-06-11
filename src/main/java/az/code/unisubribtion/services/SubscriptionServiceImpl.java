@@ -140,7 +140,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public Subscription updateSubscription(Long userId, Subscription subscription) {
-        return subRepo.save(subscription);
+        return subRepo.save(subscription.toBuilder().userId(userId).build());
     }
 
     @Override
