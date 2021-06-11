@@ -64,9 +64,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    public Long deleteSub(Long userId, Long subscriptionId) {
+        Subscription result = subRepo.findSubscriptionByUserIdAndId(userId, subscriptionId);
+        subRepo.delete(result);
+        return result.getId();
+    }
+
+    @Override
     public Long deleteGroup(Long userId, Long groupId) {
-        Group result = groupRepo.getGroupByUserIdAndGroupId(userId,groupId);
-        groupRepo.deleteByUserIdAndGroupId(userId, groupId);
+        Group result = groupRepo.getGroupByUserIdAndId(userId,groupId);
+        groupRepo.delete(result);
         return result.getId();
     }
 
@@ -88,13 +95,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public Group updateGroup(Long userId, Group group) {
         return groupRepo.save(group);
-    }
-
-    @Override
-    public Long deleteSubscription(Long userId, Long subscriptionId) {
-        Subscription result = subRepo.findSubscriptionByUserIdAndSubscriptionId(userId, subscriptionId);
-        subRepo.delete(result);
-        return result.getId();
     }
 
 

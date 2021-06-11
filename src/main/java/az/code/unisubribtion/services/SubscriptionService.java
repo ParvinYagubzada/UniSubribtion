@@ -16,6 +16,8 @@ public interface SubscriptionService {
 
     List<GroupDTO> getAllGroupDTOs(Long userId);
 
+    Long deleteSub(Long userId, Long subscriptionId);
+
     Long deleteGroup(Long userId, Long groupId);
 
     Subscription createSubscription(Long userId, Subscription subscription);
@@ -25,7 +27,4 @@ public interface SubscriptionService {
     Subscription updateSubscription(Long userId, Subscription subscription);
 
     Group updateGroup(Long userId, Group group);
-    Group createGroup(Group group);
-
-    Long deleteSubscription(Long userId, Long subscriptionId);
 }

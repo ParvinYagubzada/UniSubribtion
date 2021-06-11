@@ -71,7 +71,7 @@ public class MainController {
             @RequestParam Long userId,
             @RequestParam Long subId
     ) {
-        return new ResponseEntity<>(subService.deleteSub(userId, groupId), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(subService.deleteSub(userId, subId), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/subscriptions")
