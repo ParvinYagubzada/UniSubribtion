@@ -18,9 +18,9 @@ public class Notification {
     private Long id;
     private String name;
     private String context;
-//    @Column(name = "subscription_id")
+    @Column(name = "subscription_id")
     private Long subscriptionId;
-//    @Column(name = "user_id")
+    @Column(name = "user_id")
     private Long userId;
     private LocalDateTime time;
 }

@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Price {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String value;
     private String type;
 }

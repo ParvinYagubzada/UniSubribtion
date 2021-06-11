@@ -18,7 +18,7 @@ public class SubscriptionUser {
     private Long id;
     private String username;
     private String password;
-    private Boolean enabled;
+    private Boolean active;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "relation_user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
