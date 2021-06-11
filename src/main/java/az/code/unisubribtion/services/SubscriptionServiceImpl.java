@@ -1,44 +1,74 @@
 package az.code.unisubribtion.services;
 
+import az.code.unisubribtion.dtos.GroupDTO;
+import az.code.unisubribtion.models.Group;
 import az.code.unisubribtion.models.Subscription;
+import az.code.unisubribtion.repositories.GroupRepository;
 import az.code.unisubribtion.repositories.SubscriptionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
 
-    private final SubscriptionRepository repo;
+    private final SubscriptionRepository subRepo;
+    private final GroupRepository groupRepo;
 
-    public SubscriptionServiceImpl(SubscriptionRepository repo) {
-        this.repo = repo;
+    public SubscriptionServiceImpl(SubscriptionRepository subRepo, GroupRepository groupRepo) {
+        this.subRepo = subRepo;
+        this.groupRepo = groupRepo;
     }
 
     @Override
-    public List<Subscription> getSubscriptionsByUserId(Integer pageNo, Integer pageSize, String sortBy) {
+    public List<Subscription> getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
-        Page<Subscription> pageResult = repo.findSubscriptions(paging);
+        Page<Subscription> pageResult = subRepo.findSubscriptionsByUserId(userId, paging);
         return getResult(pageResult);
     }
 
     @Override
-    public List<Subscription> getSubscriptionsByCategoryId(Long categoryId, Integer pageNo, Integer pageSize, String sortBy) {
+    public List<Subscription> getSubscriptionsByCategoryId(Long userId, Long categoryId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
-        Page<Subscription> pageResult = repo.findSubscriptionsByCategoryId(categoryId, paging);
+        Page<Subscription> pageResult = subRepo.findSubscriptionsByUserIdAndCategoryId(userId, categoryId, paging);
         return getResult(pageResult);
     }
 
     @Override
-    public List<Subscription> getSubscriptionsByGroupId(Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
+    public List<Subscription> getSubscriptionsByGroupId(Long userId, Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
-        Page<Subscription> pageResult = repo.findSubscriptionsByGroupId(groupId, paging);
+        Page<Subscription> pageResult = subRepo.findSubscriptionsByUserIdAndGroupId(userId, groupId, paging);
         return getResult(pageResult);
+    }
+
+    @Override
+    public List<Group> getAllGroups() {
+        return Streamable.of(groupRepo.findAll()).toList();
+    }
+
+    @Override
+    public List<GroupDTO> getAllGroupDTOs() {
+        return Streamable.of(groupRepo.findAll())
+                .toList().stream()
+                .map(group -> new GroupDTO())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Subscription createSubscription(Subscription subscription) {
+        return subRepo.save(subscription);
+    }
+
+    @Override
+    public Group createGroup(Group group) {
+        return null;
     }
 
     private Pageable preparePage(Integer pageNo, Integer pageSize, String sortBy) {
