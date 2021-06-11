@@ -3,6 +3,7 @@ package az.code.unisubribtion.controllers;
 import az.code.unisubribtion.dtos.UserDTO;
 import az.code.unisubribtion.exceptions.EmailAlreadyExists;
 import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
+import az.code.unisubribtion.models.Group;
 import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.services.SubscriptionService;
@@ -55,6 +56,38 @@ public class MainController {
             @RequestParam(defaultValue = "id") String sortBy
     ) {
         return new ResponseEntity<>(subService.getSubscriptionsByGroupId(userId, groupId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/subscriptions")
+    public ResponseEntity<Subscription> createSub(
+            @RequestParam Long userId,
+            @RequestBody Subscription sub
+    ) {
+        return new ResponseEntity<>(subService.createSubscription(userId, sub), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/subscriptions")
+    public ResponseEntity<Group> createGroup(
+            @RequestParam Long userId,
+            @RequestBody Group group
+    ) {
+        return new ResponseEntity<>(subService.createGroup(userId, group), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/subscriptions")
+    public ResponseEntity<Subscription> updateSub(
+            @RequestParam Long userId,
+            @RequestBody Subscription sub
+    ) {
+        return new ResponseEntity<>(subService.updateSubscription(userId, sub), HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/subscriptions")
+    public ResponseEntity<Group> updateGroup(
+            @RequestParam Long userId,
+            @RequestBody Group group
+    ) {
+        return new ResponseEntity<>(subService.updateGroup(userId, group), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/users")
