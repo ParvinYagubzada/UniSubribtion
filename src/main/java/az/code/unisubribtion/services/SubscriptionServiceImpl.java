@@ -14,42 +14,42 @@ import java.util.List;
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
 
-    SubscriptionRepository repo;
+    private final SubscriptionRepository repo;
 
     public SubscriptionServiceImpl(SubscriptionRepository repo) {
         this.repo = repo;
     }
 
     @Override
-    public List<Subscription> getAllSubscriptions(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-        Page<Subscription> pageResult = repo.findAll(paging);
-        if (pageResult.hasContent()) {
-            return pageResult.getContent();
-        } else {
-            return new LinkedList<>();
-        }
-    }
-
-    @Override
     public List<Subscription> getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Pageable paging = preparePage(pageNo, pageSize, sortBy);
         Page<Subscription> pageResult = repo.findSubscriptionsByUserId(userId, paging);
+        return getResult(pageResult);
+    }
+
+    @Override
+    public List<Subscription> getSubscriptionsByCategoryId(Long userId, Long categoryId, Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = preparePage(pageNo, pageSize, sortBy);
+        Page<Subscription> pageResult = repo.findSubscriptionsByUserIdAndCategoryId(userId, categoryId, paging);
+        return getResult(pageResult);
+    }
+
+    @Override
+    public List<Subscription> getSubscriptionsByGroupId(Long userId, Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = preparePage(pageNo, pageSize, sortBy);
+        Page<Subscription> pageResult = repo.findSubscriptionsByUserIdAndCategoryId(userId, groupId, paging);
+        return getResult(pageResult);
+    }
+
+    private Pageable preparePage(Integer pageNo, Integer pageSize, String sortBy) {
+        return PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+    }
+
+    private List<Subscription> getResult(Page<Subscription> pageResult) {
         if (pageResult.hasContent()) {
             return pageResult.getContent();
         } else {
             return new LinkedList<>();
         }
     }
-
-    @Override
-    public List<Subscription> getSubscriptionsByCategoryId(Long categoryId, Integer pageNo, Integer pageSize, String sortBy) {
-        return null;
-    }
-
-    @Override
-    public List<Subscription> getSubscriptionsByGroupId(Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
-        return null;
-    }
-
 }

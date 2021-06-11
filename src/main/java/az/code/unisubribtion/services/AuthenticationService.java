@@ -20,7 +20,7 @@ import java.util.Set;
 //@Service("userDetailsService")
 public class AuthenticationService implements UserDetailsService {
 
-    UserRepository repository;
+    private final UserRepository repository;
 
     public AuthenticationService(UserRepository repository) {
         this.repository = repository;
