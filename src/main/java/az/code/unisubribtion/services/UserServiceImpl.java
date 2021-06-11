@@ -21,10 +21,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(SubscriptionUser user) {
-        if (repo.findUserByUsername(user.getUsername()) != null)
-            throw new UsernameAlreadyExists();
         if (repo.findUserByEmail(user.getEmail()) != null)
             throw new EmailAlreadyExists();
+        if (repo.findUserByUsername(user.getUsername()) != null)
+            throw new UsernameAlreadyExists();
         return new UserDTO(repo.save(user.toBuilder()
                 .password(encoder.encode(user.getPassword()))
                 .build()

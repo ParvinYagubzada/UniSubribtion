@@ -21,23 +21,23 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public List<Subscription> getSubscriptionsByUserId(Long userId, Integer pageNo, Integer pageSize, String sortBy) {
+    public List<Subscription> getSubscriptionsByUserId(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
-        Page<Subscription> pageResult = repo.findSubscriptionsByUserId(userId, paging);
+        Page<Subscription> pageResult = repo.findSubscriptions(paging);
         return getResult(pageResult);
     }
 
     @Override
-    public List<Subscription> getSubscriptionsByCategoryId(Long userId, Long categoryId, Integer pageNo, Integer pageSize, String sortBy) {
+    public List<Subscription> getSubscriptionsByCategoryId(Long categoryId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
-        Page<Subscription> pageResult = repo.findSubscriptionsByUserIdAndCategoryId(userId, categoryId, paging);
+        Page<Subscription> pageResult = repo.findSubscriptionsByCategoryId(categoryId, paging);
         return getResult(pageResult);
     }
 
     @Override
-    public List<Subscription> getSubscriptionsByGroupId(Long userId, Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
+    public List<Subscription> getSubscriptionsByGroupId(Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
-        Page<Subscription> pageResult = repo.findSubscriptionsByUserIdAndCategoryId(userId, groupId, paging);
+        Page<Subscription> pageResult = repo.findSubscriptionsByGroupId(groupId, paging);
         return getResult(pageResult);
     }
 
