@@ -27,4 +27,6 @@ public interface SubscriptionService {
     Subscription createSubscription(Subscription subscription);
 
     Group createGroup(Group group);
+
+    Long deleteSubscription(Long userId, Long subscriptionId);
 }
