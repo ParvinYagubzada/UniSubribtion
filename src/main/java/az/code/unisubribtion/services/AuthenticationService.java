@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Set;
 
 @Service("userDetailsService")
-public class SubscriptionUserDetailsService implements UserDetailsService {
+public class AuthenticationService implements UserDetailsService {
 
     UserRepository repository;
 
-    public SubscriptionUserDetailsService(UserRepository dao) {
+    public AuthenticationService(UserRepository dao) {
         this.repository = dao;
     }
 

@@ -30,4 +30,9 @@ public class Subscription {
     private Category category;
     @Column(name = "subscription_id")
     private LocalDateTime subscriptionTime;
+    private Boolean hasNotification;
+    private Boolean active;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "duration_id")
+    private Duration duration;
 }

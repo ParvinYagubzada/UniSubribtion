@@ -1,7 +1,15 @@
 package az.code.unisubribtion.services;
 
-import org.springframework.stereotype.Service;
+import az.code.unisubribtion.models.Subscription;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
-@Service
-public class SubscriptionService {
+
+import java.util.List;
+
+public interface SubscriptionService {
+
+    List<Subscription> getAllSubscriptions(Integer pageNo, Integer pageSize, String sortBy);
 }

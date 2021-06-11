@@ -11,5 +11,4 @@ public interface SubscriptionRepository extends PagingAndSortingRepository<Subsc
     List<Subscription> findSubscriptionsByUserId (Long userId, Pageable pageable);
     List<Subscription> findSubscriptionsByCategoryId (Long categoryId, Pageable pageable);
     List<Subscription> findSubscriptionsByGroupId (Long groupId, Pageable pageable);
-
 }
