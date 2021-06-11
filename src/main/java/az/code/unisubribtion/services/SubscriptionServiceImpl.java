@@ -34,13 +34,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return getResult(pageResult);
     }
 
-//    @Override
-//    public List<Subscription> getSubscriptionsByCategoryId(Long userId, Long categoryId, Integer pageNo, Integer pageSize, String sortBy) {
-//        Pageable paging = preparePage(pageNo, pageSize, sortBy);
-//        Page<Subscription> pageResult = subRepo.findSubscriptionsByUserIdAndCategoryId(userId, categoryId, paging);
-//        return getResult(pageResult);
-//    }
-
     @Override
     public List<Subscription> getSubscriptionsByGroupId(Long userId, Long groupId, Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = preparePage(pageNo, pageSize, sortBy);
@@ -71,12 +64,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Long deleteByUserIdAndGroupId(Long userId, Long groupId) {
+    public Long deleteGroup(Long userId, Long groupId) {
         Group result = groupRepo.getGroupByUserIdAndGroupId(userId,groupId);
         groupRepo.deleteByUserIdAndGroupId(userId, groupId);
         return result.getId();
     }
-
 
     @Override
     public Subscription createSubscription(Long userId, Subscription subscription) {
@@ -97,6 +89,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public Group updateGroup(Long userId, Group group) {
         return groupRepo.save(group);
     }
+
 
 
     private Pageable preparePage(Integer pageNo, Integer pageSize, String sortBy) {

@@ -3,6 +3,7 @@ package az.code.unisubribtion.controllers;
 import az.code.unisubribtion.dtos.UserDTO;
 import az.code.unisubribtion.exceptions.EmailAlreadyExists;
 import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
+import az.code.unisubribtion.models.Group;
 import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.services.SubscriptionService;
@@ -46,17 +47,6 @@ public class MainController {
         return new ResponseEntity<>(subService.getSubscriptionsByUserId(userId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
 
-//    @GetMapping("/subscriptions")
-//    public ResponseEntity<List<Subscription>> getSubscriptionsByUserIdAndCategoryId(
-//            @RequestParam Long userId,
-//            @RequestParam Long categoryId,
-//            @RequestParam(defaultValue = "0") Integer pageNo,
-//            @RequestParam(defaultValue = "10") Integer pageSize,
-//            @RequestParam(defaultValue = "id") String sortBy
-//    ) {
-////        return new ResponseEntity<>(subService.getSubscriptionsByCategoryId(userId, categoryId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
-//    }
-
     @GetMapping("/subscriptions")
     public ResponseEntity<List<Subscription>> getSubscriptionsByUserIdAndGroupId(
             @RequestParam Long userId,
@@ -69,11 +59,11 @@ public class MainController {
     }
 
     @DeleteMapping("/subscription")
-    public ResponseEntity<Long> deleteGroupByUserIdAndGroupId(
+    public ResponseEntity<Long> deleteGroup(
             @RequestParam Long userId,
             @RequestParam Long groupId
     ){
-        return new ResponseEntity<>(subService.deleteByUserIdAndGroupId(userId,groupId), HttpStatus.OK);
+        return new ResponseEntity<>(subService.deleteGroup(userId,groupId), HttpStatus.OK);
     }
 
     @PostMapping("/subscriptions")
