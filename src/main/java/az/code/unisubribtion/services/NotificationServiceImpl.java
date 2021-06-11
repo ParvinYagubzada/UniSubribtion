@@ -5,6 +5,7 @@ import az.code.unisubribtion.models.Paging;
 import az.code.unisubribtion.repositories.NotificationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Pair;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +22,17 @@ public class NotificationServiceImpl implements NotificationService{
         this.notificationRepo = notificationRepo;
     }
 
-    @Override
-    public Notification createNotification(Long userId, Long subscriptionId, Notification notification) {
-        return notificationRepo.save(notification.toBuilder()
-                .userId(userId)
-                .subscriptionId(subscriptionId)
-                .context("Your subscription will be updated in one day")
-                .build());
+//    @Override
+//    public Notification createNotification(Long userId, Notification notification) {
+//        return notificationRepo.save(notification.toBuilder()
+//                .userId(userId)
+//                .subscriptionId(subscriptionId)
+//                .context("Your subscription will be updated in one day")
+//                .build());
+//    }
+
+    public Pair<Long, List<Notification>> getSimpleNotifications(Long userId, Long limit) {
+
     }
 
     @Override

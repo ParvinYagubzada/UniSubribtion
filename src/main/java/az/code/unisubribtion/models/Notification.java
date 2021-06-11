@@ -18,6 +18,7 @@ public class Notification {
     private Long id;
     private String name;
     private String context;
+    private Boolean hasSeen;
     @Column(name = "subscription_id")
     private Long subscriptionId;
     @Column(name = "user_id")
