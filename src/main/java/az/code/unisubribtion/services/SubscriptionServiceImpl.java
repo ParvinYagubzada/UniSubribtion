@@ -139,13 +139,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Subscription updateSubscription(Long userId, Subscription subscription) {
-        return subRepo.save(subscription.toBuilder().userId(userId).build());
+    public Subscription updateSubscription(Long userId, Long subId, Subscription subscription) {
+        return subRepo.save(subscription.toBuilder().id(userId).userId(userId).build());
     }
 
     @Override
-    public Group updateGroup(Long userId, Group group) {
-        return groupRepo.save(group);
+    public Group updateGroup(Long userId, Long groupId, Group group) {
+        return groupRepo.save(group.toBuilder().id(groupId).userId(userId).build());
     }
 
     @Override

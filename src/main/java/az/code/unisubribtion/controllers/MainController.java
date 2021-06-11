@@ -8,7 +8,6 @@ import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
 import az.code.unisubribtion.models.*;
 import az.code.unisubribtion.services.SubscriptionService;
 import az.code.unisubribtion.services.UserService;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -124,10 +123,10 @@ public class MainController {
     @PutMapping("/subscriptions")//TODO: Checked!
     public ResponseEntity<Subscription> updateSub(
             @RequestParam Long userId,
-            @RequestParam Long groupId,
+            @RequestParam Long subId,
             @RequestBody Subscription sub
     ) {
-        return new ResponseEntity<>(subService.updateSubscription(userId, groupId, sub), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(subService.updateSubscription(userId, subId, sub), HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/groups")
@@ -135,7 +134,7 @@ public class MainController {
             @RequestParam Long userId,
             @RequestBody Group group
     ) {
-        return new ResponseEntity<>(subService.updateGroup(userId, group), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(subService.updateGroup(userId, group, group), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/users")
