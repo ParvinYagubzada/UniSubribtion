@@ -90,6 +90,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return groupRepo.save(group);
     }
 
+    @Override
+    public Long deleteSubscription(Long userId, Long subscriptionId) {
+        Subscription result = subRepo.findSubscriptionByUserIdAndSubscriptionId(userId, subscriptionId);
+        subRepo.delete(result);
+        return result.getId();
+    }
+
+
     private Pageable preparePage(Integer pageNo, Integer pageSize, String sortBy) {
         return PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
     }
