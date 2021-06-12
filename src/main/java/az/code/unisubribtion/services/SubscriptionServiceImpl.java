@@ -27,32 +27,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public SubscriptionServiceImpl(SubscriptionRepository subRepo, GroupRepository groupRepo) {
         this.subRepo = subRepo;
         this.groupRepo = groupRepo;
-
-        Faker faker = new Faker();
-        for (int i = 1; i <= 10; i++) {
-            Group group = new Group();
-            group.setName(faker.name().username());
-            group.setUserId(i+100L);
-            groupRepo.save(group);
-            for (int j = 0; j < 10; j++) {
-                Duration duration = Duration.builder()
-                        .unit(DateUnit.values()[faker.number().numberBetween(0, 4)])
-                        .value((long) faker.number().numberBetween(1, 15))
-                        .build();
-                Subscription subscription = Subscription.builder()
-                        .lastPaymentDay(LocalDateTime.now())
-                        .userId(i + 100L)
-                        .name(faker.animal().name())
-                        .duration(duration)
-                        .group(group)
-                        .price(faker.number().randomDouble(3, 5, 100))
-                        .hasNotification(false)
-                        .active(true)
-                        .build();
-                subRepo.save(subscription);
-            }
-            //groupRepo.save(group);
-        }
+//        createSubs(10, subRepo);
     }
 
     @Override

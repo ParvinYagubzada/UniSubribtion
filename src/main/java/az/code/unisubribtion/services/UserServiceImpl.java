@@ -2,6 +2,7 @@ package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.dtos.UserDTO;
 import az.code.unisubribtion.exceptions.EmailAlreadyExists;
+import az.code.unisubribtion.exceptions.LoginException;
 import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.repositories.UserRepository;
@@ -23,16 +24,17 @@ public class UserServiceImpl implements UserService {
 
         this.repo = repo;
 
-        Faker faker = new Faker();
-        for (int i = 1; i <= 100; i++) {
-            SubscriptionUser user = new SubscriptionUser();
-            user.setName(faker.name().firstName());
-            user.setUsername(faker.name().username());
-            user.setSurname(faker.name().lastName());
-            user.setEmail(faker.internet().emailAddress());
-            user.setPassword(faker.phoneNumber().cellPhone());
-            user.setActive(true);
-        }
+//        Faker faker = new Faker();
+//        for (int i = 1; i <= 100; i++) {
+//            SubscriptionUser user = new SubscriptionUser();
+//            user.setName(faker.name().firstName());
+//            user.setUsername(faker.name().username());
+//            user.setSurname(faker.name().lastName());
+//            user.setEmail(faker.internet().emailAddress());
+//            user.setPassword(faker.phoneNumber().cellPhone());
+//            user.setActive(true);
+//            repo.save(user);
+//        }
     }
 
     @Override
@@ -50,13 +52,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO authUser(String username, String pass) {
         SubscriptionUser user = repo.findUserByUsername(username);
-        if (username.equals(user.getUsername()) && pass.equals(user.getPassword())) {
-            return new UserDTO(repo.save(user.toBuilder()
-                    .password(user.getPassword())
-                    .build()
-            ));
+        if (user != null) {
+            if (username.equals(user.getUsername()) && pass.equals(user.getPassword())) {
+                return new UserDTO(repo.save(user.toBuilder()
+                        .password(user.getPassword())
+                        .build()
+                ));
+            }
         }
-        return null;
+        throw new LoginException();
     }
 
     public String encode(String password) throws NoSuchAlgorithmException {

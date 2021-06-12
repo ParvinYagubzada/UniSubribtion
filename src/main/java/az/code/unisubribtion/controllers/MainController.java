@@ -4,11 +4,13 @@ import az.code.unisubribtion.dtos.GroupDTO;
 import az.code.unisubribtion.dtos.UserDTO;
 import az.code.unisubribtion.exceptions.EmailAlreadyExists;
 import az.code.unisubribtion.exceptions.GroupIsNotEmpty;
+import az.code.unisubribtion.exceptions.LoginException;
 import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
 import az.code.unisubribtion.models.*;
 import az.code.unisubribtion.services.NotificationService;
 import az.code.unisubribtion.services.SubscriptionService;
 import az.code.unisubribtion.services.UserService;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +50,11 @@ public class MainController {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @ExceptionHandler(LoginException.class)
+    public ResponseEntity<String> handleNotFound(LoginException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @GetMapping("/subscriptions")
     public ResponseEntity<Paging<Subscription>> getSubscriptionsByUserId(
             @RequestParam Long userId,
@@ -69,7 +76,7 @@ public class MainController {
         return new ResponseEntity<>(subService.getSubscriptionsByGroupId(userId, groupId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/groups/dto")
+    @GetMapping("/groups/summary")
     public ResponseEntity<List<GroupDTO>> getGroupDTOS(
             @RequestParam Long userId
     ) {
@@ -141,21 +148,6 @@ public class MainController {
         return new ResponseEntity<>(subService.updateGroup(userId, groupId, group), HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/users")
-    public ResponseEntity<UserDTO> createUser(@RequestBody SubscriptionUser user) throws NoSuchAlgorithmException {
-        return new ResponseEntity<>(service.createUser(user), HttpStatus.CREATED);
-    }
-
-    @GetMapping("/notifications")
-    public ResponseEntity<Paging<Notification>> getNotifications(
-            @RequestParam Long userId,
-            @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy
-    ) {
-        return new ResponseEntity<>(notService.getAllNotifications(userId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
-    }
-
     @GetMapping("subscription-stop")
     public ResponseEntity<Long> stopSubscription(
             @RequestParam Long userId,
@@ -170,6 +162,29 @@ public class MainController {
             @RequestParam Long notificationId
     ) {
         return new ResponseEntity<>(notService.deleteNotification(userId, notificationId), HttpStatus.OK);
+    }
+
+    @GetMapping("/notifications")
+    public ResponseEntity<Paging<Notification>> getNotifications(
+            @RequestParam Long userId,
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        return new ResponseEntity<>(notService.getAllNotifications(userId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/notifications/simple")
+    public ResponseEntity<Pair<Long, List<Notification>>> getSimpleNotifications(
+            @RequestParam Long userId,
+            @RequestParam Long limit
+    ) {
+        return new ResponseEntity<>(notService.getSimpleNotifications(userId, limit), HttpStatus.OK);
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<UserDTO> createUser(@RequestBody SubscriptionUser user) throws NoSuchAlgorithmException {
+        return new ResponseEntity<>(service.createUser(user), HttpStatus.CREATED);
     }
 
     @GetMapping("/users/logout")
@@ -187,6 +202,6 @@ public class MainController {
             request.getSession().setAttribute("userId", userDTO);
             return userDTO;
         }
-        return UserDTO.builder().username("sada").build();
+        return null;
     }
 }

@@ -17,8 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static az.code.unisubribtion.utils.Util.getResult;
-import static az.code.unisubribtion.utils.Util.preparePage;
+import static az.code.unisubribtion.utils.Util.*;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
@@ -30,10 +29,9 @@ public class NotificationServiceImpl implements NotificationService {
         this.subRepo = subRepo;
     }
 
-    //TODO: hasSeen endpoint!
     @Scheduled(cron = "0 0 12 * * ?")
     public void createNotifications() {
-        List<Subscription> subscriptions = subRepo.findSubscriptionsHasNotificationTrueAndActiveTrue();
+        List<Subscription> subscriptions = subRepo.findSubscriptionsByActiveTrueAndHasNotificationTrue();
         List<Notification> notifications = new LinkedList<>();
         subscriptions.forEach(subscription -> {
             int period = Period.between(subscription.getNextPaymentDay().toLocalDate(),
@@ -52,6 +50,12 @@ public class NotificationServiceImpl implements NotificationService {
                 } else if (period == 0) {
                     basic.toBuilder().name("Payment day").build();
                 } else {
+                    LocalDateTime next = subscription.getNextPaymentDay().plus(subscription
+                                    .getDuration()
+                                    .getValue(),
+                            convertUnit(subscription.getDuration().getUnit()));
+                    subscription.setLastPaymentDay(subscription.getNextPaymentDay());
+                    subscription.setNextPaymentDay(next);
                     basic.toBuilder().name("Expired").build();
                 }
                 notifications.add(basic);
@@ -60,7 +64,6 @@ public class NotificationServiceImpl implements NotificationService {
         notificationRepo.saveAll(notifications);
     }
 
-    //TODO: Create endpoint!
     @Override
     public Pair<Long, List<Notification>> getSimpleNotifications(Long userId, Long limit) {
         List<Notification> notifications = notificationRepo.getByUserIdAndHasSeenFalse(userId);
