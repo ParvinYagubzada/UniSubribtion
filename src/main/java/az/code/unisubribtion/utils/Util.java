@@ -1,10 +1,9 @@
 package az.code.unisubribtion.utils;
 
-import az.code.unisubribtion.models.DateUnit;
-import az.code.unisubribtion.models.Duration;
-import az.code.unisubribtion.models.Group;
-import az.code.unisubribtion.models.Subscription;
+import az.code.unisubribtion.models.*;
+import az.code.unisubribtion.repositories.GroupRepository;
 import az.code.unisubribtion.repositories.SubscriptionRepository;
+import az.code.unisubribtion.repositories.UserRepository;
 import com.github.javafaker.Faker;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,14 +40,28 @@ public class Util {
         return ChronoUnit.YEARS;
     }
 
-    public static void createSubs(int count, SubscriptionRepository repo) {
+    public static void createUsers(int count, UserRepository repo) {
         Faker faker = new Faker();
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= count; i++) {
+            SubscriptionUser user = new SubscriptionUser();
+            user.setName(faker.name().firstName());
+            user.setUsername(faker.name().username());
+            user.setSurname(faker.name().lastName());
+            user.setEmail(faker.internet().emailAddress());
+            user.setPassword(faker.phoneNumber().cellPhone());
+            user.setActive(true);
+            repo.save(user);
+        }
+    }
+
+    public static void createSubs(int count, GroupRepository gRepo, SubscriptionRepository repo) {
+        Faker faker = new Faker();
+        for (int i = 1; i <= count; i++) {
             Group group = new Group();
             group.setName(faker.name().username());
             group.setUserId((long) faker.number().numberBetween(2, 101));
-//            repo.save(group);
-            for (int j = 0; j < 10; j++) {
+            gRepo.save(group);
+            for (int j = 0; j < count; j++) {
                 Duration duration = Duration.builder()
                         .unit(DateUnit.values()[faker.number().numberBetween(0, 4)])
                         .value((long) faker.number().numberBetween(1, 15))
@@ -65,7 +78,6 @@ public class Util {
                         .build();
                 repo.save(subscription);
             }
-            //groupRepo.save(group);
         }
     }
 }

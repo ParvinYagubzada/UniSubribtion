@@ -24,17 +24,6 @@ public class UserServiceImpl implements UserService {
 
         this.repo = repo;
 
-//        Faker faker = new Faker();
-//        for (int i = 1; i <= 100; i++) {
-//            SubscriptionUser user = new SubscriptionUser();
-//            user.setName(faker.name().firstName());
-//            user.setUsername(faker.name().username());
-//            user.setSurname(faker.name().lastName());
-//            user.setEmail(faker.internet().emailAddress());
-//            user.setPassword(faker.phoneNumber().cellPhone());
-//            user.setActive(true);
-//            repo.save(user);
-//        }
     }
 
     @Override
