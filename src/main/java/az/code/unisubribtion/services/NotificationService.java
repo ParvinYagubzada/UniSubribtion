@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface NotificationService {
 
-//    Notification createNotification(Long userId, Long subscriptionId, Notification notification);
-
     Pair<Long, List<Notification>> getSimpleNotifications(Long userId, Long limit);
 
     Paging<Notification> getAllNotifications(Long userId, Integer pageNo, Integer pageSize, String sortBy);

@@ -157,7 +157,7 @@ public class MainController {
     }
 
     @DeleteMapping("/notifications")
-    public ResponseEntity<Long> deleteNotificationByUserId(
+    public ResponseEntity<Long> deleteNotification(
             @RequestParam Long userId,
             @RequestParam Long notificationId
     ) {

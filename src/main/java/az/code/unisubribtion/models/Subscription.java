@@ -3,6 +3,7 @@ package az.code.unisubribtion.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Setter
@@ -24,7 +25,8 @@ public class Subscription {
     @JoinColumn(name = "group_id", referencedColumnName = "id")
     private Group group;
     @Column(name = "subscription_time")
-    private LocalDateTime subscriptionTime;
+    private LocalDateTime lastPaymentDay;
+    private LocalDateTime nextPaymentDay;
     private Boolean hasNotification;
     private Boolean active;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

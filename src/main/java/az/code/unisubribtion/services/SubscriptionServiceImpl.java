@@ -2,18 +2,12 @@ package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.dtos.GroupDTO;
 import az.code.unisubribtion.exceptions.GroupIsNotEmpty;
-import az.code.unisubribtion.models.DateUnit;
-import az.code.unisubribtion.models.Duration;
-import az.code.unisubribtion.models.Group;
-import az.code.unisubribtion.models.Paging;
-import az.code.unisubribtion.models.Subscription;
+import az.code.unisubribtion.models.*;
 import az.code.unisubribtion.repositories.GroupRepository;
 import az.code.unisubribtion.repositories.SubscriptionRepository;
 import com.github.javafaker.Faker;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +16,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-import static az.code.unisubribtion.utils.Util.getResult;
-import static az.code.unisubribtion.utils.Util.preparePage;
+import static az.code.unisubribtion.utils.Util.*;
 
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
@@ -47,7 +40,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                         .value((long) faker.number().numberBetween(1, 15))
                         .build();
                 Subscription subscription = Subscription.builder()
-                        .subscriptionTime(LocalDateTime.now())
+                        .lastPaymentDay(LocalDateTime.now())
                         .userId(i + 100L)
                         .name(faker.animal().name())
                         .duration(duration)
@@ -98,8 +91,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             dto.setName(group.getName());
             List<Subscription> subs = subRepo.findSubscriptionsByUserIdAndGroupId(userId, group.getId());
             dto.setSubscriptionCount(subs.size());
-            subs.sort(Comparator.comparing(Subscription::getSubscriptionTime));
-            dto.setShortestDeadline(subs.get(0).getSubscriptionTime());
+            subs.sort(Comparator.comparing(Subscription::getLastPaymentDay));
+            dto.setShortestDeadline(subs.get(0).getNextPaymentDay());
             dto.setTotalPrices(subs.stream().mapToDouble(Subscription::getPrice).sum());
             groupDTOS.add(dto);
         }
@@ -133,7 +126,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public Subscription createSubscription(Long userId, Subscription subscription) {
-        return subRepo.save(subscription.toBuilder().userId(userId).build());
+        LocalDateTime last = subscription.getLastPaymentDay().plus(subscription
+                        .getDuration()
+                        .getValue(),
+                        convertUnit(subscription.getDuration().getUnit()));
+        return subRepo.save(subscription.toBuilder().userId(userId).lastPaymentDay(last).build());
     }
 
     @Override
