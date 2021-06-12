@@ -15,34 +15,35 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static az.code.unisubribtion.utils.Util.encode;
+
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repo;
 
     public UserServiceImpl(UserRepository repo) {
-
         this.repo = repo;
-
+//        createUsers(100, repo);
     }
 
     @Override
-    public UserDTO createUser(SubscriptionUser user) {
+    public UserDTO createUser(SubscriptionUser user) throws NoSuchAlgorithmException {
         if (repo.findUserByEmail(user.getEmail()) != null)
             throw new EmailAlreadyExists();
         if (repo.findUserByUsername(user.getUsername()) != null)
             throw new UsernameAlreadyExists();
         return new UserDTO(repo.save(user.toBuilder()
-                .password((user.getPassword()))
+                .password((encode(user.getPassword())))
                 .build()
         ));
     }
 
     @Override
-    public UserDTO authUser(String username, String pass) {
+    public UserDTO authUser(String username, String pass) throws NoSuchAlgorithmException {
         SubscriptionUser user = repo.findUserByUsername(username);
         if (user != null) {
-            if (username.equals(user.getUsername()) && pass.equals(user.getPassword())) {
+            if (username.equals(user.getUsername()) && encode(pass).equals(user.getPassword())) {
                 return new UserDTO(repo.save(user.toBuilder()
                         .password(user.getPassword())
                         .build()
@@ -50,12 +51,5 @@ public class UserServiceImpl implements UserService {
             }
         }
         throw new LoginException();
-    }
-
-    public String encode(String password) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(password.getBytes());
-        byte[] digest = md.digest();
-        return DatatypeConverter.printHexBinary(digest).toUpperCase();
     }
 }

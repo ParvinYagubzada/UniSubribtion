@@ -5,9 +5,13 @@ import az.code.unisubribtion.models.Paging;
 import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.repositories.NotificationRepository;
 import az.code.unisubribtion.repositories.SubscriptionRepository;
+import az.code.unisubribtion.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +27,13 @@ import static az.code.unisubribtion.utils.Util.*;
 public class NotificationServiceImpl implements NotificationService {
     NotificationRepository notificationRepo;
     SubscriptionRepository subRepo;
+    UserRepository userRepo;
+    final JavaMailSender sender;
 
-    public NotificationServiceImpl(NotificationRepository notificationRepo, SubscriptionRepository subRepo) {
+    public NotificationServiceImpl(NotificationRepository notificationRepo, SubscriptionRepository subRepo, JavaMailSender sender) {
         this.notificationRepo = notificationRepo;
         this.subRepo = subRepo;
+        this.sender = sender;
     }
 
     @Scheduled(cron = "0 0 12 * * ?")
@@ -59,6 +66,7 @@ public class NotificationServiceImpl implements NotificationService {
                     basic.toBuilder().name("Expired").build();
                 }
                 notifications.add(basic);
+                sendNotificationEmail(basic);
             }
         });
         notificationRepo.saveAll(notifications);
@@ -86,5 +94,15 @@ public class NotificationServiceImpl implements NotificationService {
         Notification result = notificationRepo.getNotificationByUserIdAndId(userId, notificationId);
         notificationRepo.delete(result);
         return result.getId();
+    }
+
+    @Override
+    public void sendNotificationEmail(Notification notification) {
+        String email = userRepo.findById(notification.getUserId()).get().getEmail();
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setSubject("Subscription tracker notification: " + notification.getName());
+        mail.setText(notification.getContext());
+        sender.send(mail);
     }
 }

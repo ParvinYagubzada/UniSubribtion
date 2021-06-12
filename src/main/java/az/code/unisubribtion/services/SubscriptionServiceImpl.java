@@ -27,7 +27,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public SubscriptionServiceImpl(SubscriptionRepository subRepo, GroupRepository groupRepo) {
         this.subRepo = subRepo;
         this.groupRepo = groupRepo;
-//        createSubs(10, subRepo);
+//        createSubs(100, groupRepo, subRepo);
     }
 
     @Override

@@ -10,6 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
@@ -54,13 +57,13 @@ public class Util {
         }
     }
 
-    public static void createSubs(int count, GroupRepository gRepo, SubscriptionRepository repo) {
+    public static void createSubs(int count, GroupRepository groupRepo, SubscriptionRepository repo) {
         Faker faker = new Faker();
         for (int i = 1; i <= count; i++) {
             Group group = new Group();
             group.setName(faker.name().username());
             group.setUserId((long) faker.number().numberBetween(2, 101));
-            gRepo.save(group);
+            groupRepo.save(group);
             for (int j = 0; j < count; j++) {
                 Duration duration = Duration.builder()
                         .unit(DateUnit.values()[faker.number().numberBetween(0, 4)])
@@ -76,8 +79,19 @@ public class Util {
                         .hasNotification(false)
                         .active(true)
                         .build();
+                subscription = subscription.toBuilder().nextPaymentDay(subscription.getLastPaymentDay().plus(subscription
+                                .getDuration()
+                                .getValue(),
+                        convertUnit(subscription.getDuration().getUnit()))).build();
                 repo.save(subscription);
             }
         }
+    }
+
+    public static String encode(String password) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+        byte[] digest = md.digest();
+        return DatatypeConverter.printHexBinary(digest).toUpperCase();
     }
 }
