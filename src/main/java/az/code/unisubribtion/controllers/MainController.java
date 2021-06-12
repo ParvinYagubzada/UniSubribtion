@@ -1,6 +1,7 @@
 package az.code.unisubribtion.controllers;
 
 import az.code.unisubribtion.dtos.GroupDTO;
+import az.code.unisubribtion.dtos.JsonSubDTO;
 import az.code.unisubribtion.dtos.UserDTO;
 import az.code.unisubribtion.exceptions.EmailAlreadyExists;
 import az.code.unisubribtion.exceptions.GroupIsNotEmpty;
@@ -54,7 +55,7 @@ public class MainController {
     public ResponseEntity<String> handleNotFound(LoginException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
+    //13.12.2211
     @GetMapping("/subscriptions")
     public ResponseEntity<Paging<Subscription>> getSubscriptionsByUserId(
             @RequestParam Long userId,
@@ -124,7 +125,7 @@ public class MainController {
     @PostMapping("/subscriptions")
     public ResponseEntity<Subscription> createSub(
             @RequestParam Long userId,
-            @RequestBody Subscription sub
+            @RequestBody JsonSubDTO sub
     ) {
         return new ResponseEntity<>(subService.createSubscription(userId, sub), HttpStatus.CREATED);
     }

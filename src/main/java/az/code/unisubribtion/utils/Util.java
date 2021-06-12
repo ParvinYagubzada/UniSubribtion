@@ -1,5 +1,6 @@
 package az.code.unisubribtion.utils;
 
+import az.code.unisubribtion.dtos.JsonSubDTO;
 import az.code.unisubribtion.models.*;
 import az.code.unisubribtion.repositories.GroupRepository;
 import az.code.unisubribtion.repositories.SubscriptionRepository;
@@ -14,11 +15,14 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Util {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     public static Pageable preparePage(Integer pageNo, Integer pageSize, String sortBy) {
         return PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
     }
@@ -88,10 +92,24 @@ public class Util {
         }
     }
 
-//    public static String encode(String password) throws NoSuchAlgorithmException {
-//        MessageDigest md = MessageDigest.getInstance("MD5");
-//        md.update(password.getBytes());
-//        byte[] digest = md.digest();
-//        return DatatypeConverter.printHexBinary(digest).toUpperCase();
-//    }
+    public static Subscription convertSub(JsonSubDTO json) {
+        return Subscription.builder()
+                .id(json.getId())
+                .name(json.getName())
+                .price(json.getPrice())
+                .userId(json.getUserId())
+                .group(json.getGroup())
+                .lastPaymentDay(LocalDateTime.parse(json.getLastPaymentDay(), formatter))
+                .hasNotification(json.getHasNotification())
+                .active(json.getActive())
+                .duration(json.getDuration())
+                .build();
+    }
+
+    public static String encode(String password) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+        byte[] digest = md.digest();
+        return DatatypeConverter.printHexBinary(digest).toUpperCase();
+    }
 }

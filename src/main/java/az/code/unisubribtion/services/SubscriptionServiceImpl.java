@@ -1,17 +1,18 @@
 package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.dtos.GroupDTO;
+import az.code.unisubribtion.dtos.JsonSubDTO;
 import az.code.unisubribtion.exceptions.GroupIsNotEmpty;
 import az.code.unisubribtion.models.*;
 import az.code.unisubribtion.repositories.GroupRepository;
 import az.code.unisubribtion.repositories.SubscriptionRepository;
-import com.github.javafaker.Faker;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -105,7 +106,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Subscription createSubscription(Long userId, Subscription subscription) {
+    public Subscription createSubscription(Long userId, JsonSubDTO jsonSub) {
+        Subscription subscription = convertSub(jsonSub);
         LocalDateTime last = subscription.getLastPaymentDay().plus(subscription
                         .getDuration()
                         .getValue(),

@@ -1,6 +1,7 @@
 package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.dtos.GroupDTO;
+import az.code.unisubribtion.dtos.JsonSubDTO;
 import az.code.unisubribtion.models.Group;
 import az.code.unisubribtion.models.Paging;
 import az.code.unisubribtion.models.Subscription;
@@ -21,7 +22,7 @@ public interface SubscriptionService {
 
     Long deleteGroup(Long userId, Long groupId);
 
-    Subscription createSubscription(Long userId, Subscription subscription);
+    Subscription createSubscription(Long userId, JsonSubDTO subscription);
 
     Group createGroup(Long userId, Group group);
 
