@@ -100,6 +100,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    public List<Subscription> search(String name) {
+        return subRepo.findAllByNameLikeIgnoreCase(name + "%");
+    }
+
+    @Override
     public Subscription createSubscription(Long userId, Subscription subscription) {
         LocalDateTime last = subscription.getLastPaymentDay().plus(subscription
                         .getDuration()
@@ -115,7 +120,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public Subscription updateSubscription(Long userId, Long subId, Subscription subscription) {
-        return subRepo.save(subscription.toBuilder().id(userId).userId(userId).build());
+        return subRepo.save(subscription.toBuilder().id(subId).userId(userId).build());
     }
 
     @Override

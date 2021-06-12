@@ -6,6 +6,8 @@ import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.repositories.NotificationRepository;
 import az.code.unisubribtion.repositories.SubscriptionRepository;
 import az.code.unisubribtion.repositories.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +17,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.LinkedList;
@@ -30,13 +34,15 @@ public class NotificationServiceImpl implements NotificationService {
     UserRepository userRepo;
     final JavaMailSender sender;
 
-    public NotificationServiceImpl(NotificationRepository notificationRepo, SubscriptionRepository subRepo, JavaMailSender sender) {
+    public NotificationServiceImpl(NotificationRepository notificationRepo, SubscriptionRepository subRepo, UserRepository userRepo, JavaMailSender sender) {
         this.notificationRepo = notificationRepo;
         this.subRepo = subRepo;
+        this.userRepo = userRepo;
         this.sender = sender;
     }
 
-    @Scheduled(cron = "0 0 12 * * ?")
+    @Scheduled(cron = "0 0 8 * * ?")
+//    @Scheduled(fixedRate = 50000)
     public void createNotifications() {
         List<Subscription> subscriptions = subRepo.findSubscriptionsByActiveTrueAndHasNotificationTrue();
         List<Notification> notifications = new LinkedList<>();
@@ -45,17 +51,17 @@ public class NotificationServiceImpl implements NotificationService {
                     subscription.getLastPaymentDay().toLocalDate()).getDays();
             if (period <= 5) {
                 Notification basic = Notification.builder()
-                        .context("You have " + period + "")
+                        .userId(subscription.getUserId())
+                        .context("You have " + period + " days left you subscription payment.")
                         .subscriptionId(subscription.getId())
-                        .subscriptionId(subscription.getUserId())
                         .time(LocalDateTime.now())
                         .build();
                 if (period > 1) {
-                    basic.toBuilder().name("Upcoming").build();
+                    basic = basic.toBuilder().name("Upcoming").build();
                 } else if (period == 1) {
-                    basic.toBuilder().name("Urgent").build();
+                    basic = basic.toBuilder().name("Urgent").build();
                 } else if (period == 0) {
-                    basic.toBuilder().name("Payment day").build();
+                    basic = basic.toBuilder().name("Payment day").build();
                 } else {
                     LocalDateTime next = subscription.getNextPaymentDay().plus(subscription
                                     .getDuration()

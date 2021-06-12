@@ -15,7 +15,6 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import static az.code.unisubribtion.utils.Util.encode;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,16 +33,16 @@ public class UserServiceImpl implements UserService {
         if (repo.findUserByUsername(user.getUsername()) != null)
             throw new UsernameAlreadyExists();
         return new UserDTO(repo.save(user.toBuilder()
-                .password((encode(user.getPassword())))
+                .password(((user.getPassword())))
                 .build()
         ));
     }
 
     @Override
-    public UserDTO authUser(String username, String pass) throws NoSuchAlgorithmException {
+    public UserDTO authUser(String username, String pass) {
         SubscriptionUser user = repo.findUserByUsername(username);
         if (user != null) {
-            if (username.equals(user.getUsername()) && encode(pass).equals(user.getPassword())) {
+            if (username.equals(user.getUsername()) && pass.equals(user.getPassword())) {
                 return new UserDTO(repo.save(user.toBuilder()
                         .password(user.getPassword())
                         .build()

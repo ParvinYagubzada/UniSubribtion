@@ -88,10 +88,10 @@ public class Util {
         }
     }
 
-    public static String encode(String password) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(password.getBytes());
-        byte[] digest = md.digest();
-        return DatatypeConverter.printHexBinary(digest).toUpperCase();
-    }
+//    public static String encode(String password) throws NoSuchAlgorithmException {
+//        MessageDigest md = MessageDigest.getInstance("MD5");
+//        md.update(password.getBytes());
+//        byte[] digest = md.digest();
+//        return DatatypeConverter.printHexBinary(digest).toUpperCase();
+//    }
 }

@@ -27,8 +27,8 @@ public class MyConfiguration extends WebSecurityConfigurerAdapter {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("parvinyy@code.edu.az");
-        mailSender.setPassword("3262015Aze!");
+        mailSender.setUsername("subscriptonmanagmentmailsender@gmail.com");
+        mailSender.setPassword("32620155");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

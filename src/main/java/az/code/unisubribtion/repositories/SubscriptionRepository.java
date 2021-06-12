@@ -19,4 +19,6 @@ public interface SubscriptionRepository extends PagingAndSortingRepository<Subsc
     Subscription findByUserIdAndId(Long id, Long subId);
 
     List<Subscription> findSubscriptionsByActiveTrueAndHasNotificationTrue();
+
+    List<Subscription> findAllByNameLikeIgnoreCase(String name);
 }

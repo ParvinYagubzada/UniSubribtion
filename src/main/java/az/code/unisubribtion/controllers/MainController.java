@@ -65,6 +65,13 @@ public class MainController {
         return new ResponseEntity<>(subService.getSubscriptionsByUserId(userId, pageNo, pageSize, sortBy), HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/subscriptions/search")
+    public ResponseEntity<List<Subscription>> getSearchResults(
+            @RequestParam(defaultValue = "a") String name
+    ) {
+        return new ResponseEntity<>(subService.search(name), HttpStatus.OK);
+    }
+
     @GetMapping("/subscriptions/group")
     public ResponseEntity<Paging<Subscription>> getSubscriptionsByUserIdAndGroupId(
             @RequestParam Long userId,
@@ -148,7 +155,7 @@ public class MainController {
         return new ResponseEntity<>(subService.updateGroup(userId, groupId, group), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("subscription-stop")
+    @GetMapping("subscription/stop")
     public ResponseEntity<Long> stopSubscription(
             @RequestParam Long userId,
             @RequestParam Long subscriptionId) {
