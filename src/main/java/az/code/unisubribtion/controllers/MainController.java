@@ -195,6 +195,14 @@ public class MainController {
         return new ResponseEntity<>(notService.getSimpleNotifications(userId, limit), HttpStatus.OK);
     }
 
+    @PostMapping("/notifications/reset")
+    public ResponseEntity<String> seen(
+            @RequestParam Long userId
+    ) {
+        notService.setAllNotifications(userId);
+        return new ResponseEntity<>("restarted", HttpStatus.OK);
+    }
+
     @PostMapping("/users")
     public ResponseEntity<UserDTO> createUser(@RequestBody SubscriptionUser user) throws NoSuchAlgorithmException, MessagingException {
         UserDTO dto = service.createUser(user);

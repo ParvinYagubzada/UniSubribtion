@@ -15,4 +15,6 @@ public interface NotificationService {
     Long deleteNotification(Long userId, Long notificationId);
 
     void sendNotificationEmail(Notification notification);
+
+    void setAllNotifications(Long userId);
 }
