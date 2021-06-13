@@ -3,10 +3,7 @@ package az.code.unisubribtion.controllers;
 import az.code.unisubribtion.dtos.GroupDTO;
 import az.code.unisubribtion.dtos.JsonSubDTO;
 import az.code.unisubribtion.dtos.UserDTO;
-import az.code.unisubribtion.exceptions.EmailAlreadyExists;
-import az.code.unisubribtion.exceptions.GroupIsNotEmpty;
-import az.code.unisubribtion.exceptions.LoginException;
-import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
+import az.code.unisubribtion.exceptions.*;
 import az.code.unisubribtion.models.*;
 import az.code.unisubribtion.services.NotificationService;
 import az.code.unisubribtion.services.SubscriptionService;
@@ -54,6 +51,11 @@ public class MainController {
 
     @ExceptionHandler(LoginException.class)
     public ResponseEntity<String> handleNotFound(LoginException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserDoesNotExists.class)
+    public ResponseEntity<String> handleNotFound(UserDoesNotExists e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

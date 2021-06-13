@@ -1,14 +1,13 @@
 package az.code.unisubribtion.services;
 
+import az.code.unisubribtion.exceptions.UserDoesNotExists;
 import az.code.unisubribtion.models.Notification;
 import az.code.unisubribtion.models.Paging;
 import az.code.unisubribtion.models.Subscription;
+import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.repositories.NotificationRepository;
 import az.code.unisubribtion.repositories.SubscriptionRepository;
 import az.code.unisubribtion.repositories.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
@@ -17,13 +16,12 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static az.code.unisubribtion.utils.Util.*;
@@ -108,7 +106,10 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void sendNotificationEmail(Notification notification) {
-        String email = userRepo.findById(notification.getUserId()).get().getEmail();
+        Optional<SubscriptionUser> user = userRepo.findById(notification.getUserId());
+        if (user.isEmpty())
+            throw new UserDoesNotExists();
+        String email = user.get().getEmail();
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(email);
         mail.setSubject("Subscription tracker notification: " + notification.getName());
