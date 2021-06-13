@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static az.code.unisubribtion.utils.Util.*;
 
@@ -107,8 +108,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public List<Subscription> search(String name) {
-        return subRepo.findAllByNameLikeIgnoreCase(name + "%");
+    public List<Subscription> search(Long userId, String name) {
+        return subRepo.findAllByUserIdAndNameLikeIgnoreCase(userId, name + "%").stream()
+                .sorted(Comparator.comparing(Subscription::getName))
+                .collect(Collectors.toList());
     }
 
     @Override

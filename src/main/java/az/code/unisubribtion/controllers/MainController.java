@@ -73,9 +73,10 @@ public class MainController {
 
     @GetMapping("/subscriptions/search")
     public ResponseEntity<List<Subscription>> getSearchResults(
+            @RequestParam Long userId,
             @RequestParam(defaultValue = "a") String name
     ) {
-        return new ResponseEntity<>(subService.search(name), HttpStatus.OK);
+        return new ResponseEntity<>(subService.search(userId, name), HttpStatus.OK);
     }
 
     @GetMapping("/subscriptions/group")

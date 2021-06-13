@@ -36,7 +36,7 @@ public interface SubscriptionService {
 
     Long deleteForceGroup(Long userId, Long groupId);
 
-    List<Subscription> search(String name);
+    List<Subscription> search(Long userId, String name);
 
     void sendMail(SubscriptionUser user) throws MessagingException;
 }
