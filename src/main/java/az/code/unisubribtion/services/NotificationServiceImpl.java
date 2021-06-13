@@ -81,7 +81,7 @@ public class NotificationServiceImpl implements NotificationService {
     public Pair<Long, List<Notification>> getSimpleNotifications(Long userId, Long limit) {
         List<Notification> notifications = notificationRepo.getByUserIdAndHasSeenFalse(userId);
         return Pair.of((long) notifications.size(), notifications.stream()
-                .sorted(Comparator.comparing(Notification::getTime))
+                .sorted((base, second) -> -base.getTime().compareTo(second.getTime()))
                 .limit(limit)
                 .collect(Collectors.toList()));
     }
