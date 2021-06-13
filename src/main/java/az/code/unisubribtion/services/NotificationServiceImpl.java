@@ -2,7 +2,6 @@ package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.exceptions.UserDoesNotExists;
 import az.code.unisubribtion.models.Notification;
-import az.code.unisubribtion.utils.Paging;
 import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.repositories.NotificationRepository;
