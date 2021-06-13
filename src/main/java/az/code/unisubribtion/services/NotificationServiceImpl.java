@@ -21,6 +21,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,7 +82,10 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public Pair<Long, List<Notification>> getSimpleNotifications(Long userId, Long limit) {
         List<Notification> notifications = notificationRepo.getByUserIdAndHasSeenFalse(userId);
-        return Pair.of((long) notifications.size(), notifications.stream().limit(limit).collect(Collectors.toList()));
+        return Pair.of((long) notifications.size(), notifications.stream()
+                .sorted(Comparator.comparing(Notification::getTime))
+                .limit(limit)
+                .collect(Collectors.toList()));
     }
 
     @Override

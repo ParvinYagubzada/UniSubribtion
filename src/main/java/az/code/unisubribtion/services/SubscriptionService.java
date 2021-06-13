@@ -5,7 +5,9 @@ import az.code.unisubribtion.dtos.JsonSubDTO;
 import az.code.unisubribtion.models.Group;
 import az.code.unisubribtion.models.Paging;
 import az.code.unisubribtion.models.Subscription;
+import az.code.unisubribtion.models.SubscriptionUser;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 public interface SubscriptionService {
@@ -35,4 +37,6 @@ public interface SubscriptionService {
     Long deleteForceGroup(Long userId, Long groupId);
 
     List<Subscription> search(String name);
+
+    void sendMail(SubscriptionUser user) throws MessagingException;
 }

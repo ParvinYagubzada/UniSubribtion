@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
@@ -55,7 +56,7 @@ public class MainController {
     public ResponseEntity<String> handleNotFound(LoginException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-    //13.12.2211
+
     @GetMapping("/subscriptions")
     public ResponseEntity<Paging<Subscription>> getSubscriptionsByUserId(
             @RequestParam Long userId,
@@ -191,8 +192,10 @@ public class MainController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<UserDTO> createUser(@RequestBody SubscriptionUser user) throws NoSuchAlgorithmException {
-        return new ResponseEntity<>(service.createUser(user), HttpStatus.CREATED);
+    public ResponseEntity<UserDTO> createUser(@RequestBody SubscriptionUser user) throws NoSuchAlgorithmException, MessagingException {
+        UserDTO dto = service.createUser(user);
+        subService.sendMail(user);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @GetMapping("/users/logout")

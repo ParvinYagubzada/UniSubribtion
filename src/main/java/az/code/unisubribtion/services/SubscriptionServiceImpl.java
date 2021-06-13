@@ -6,11 +6,17 @@ import az.code.unisubribtion.exceptions.GroupIsNotEmpty;
 import az.code.unisubribtion.models.*;
 import az.code.unisubribtion.repositories.GroupRepository;
 import az.code.unisubribtion.repositories.SubscriptionRepository;
+import az.code.unisubribtion.utils.Util;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Streamable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -24,10 +30,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     private final SubscriptionRepository subRepo;
     private final GroupRepository groupRepo;
+    private final JavaMailSender sender;
 
-    public SubscriptionServiceImpl(SubscriptionRepository subRepo, GroupRepository groupRepo) {
+    public SubscriptionServiceImpl(SubscriptionRepository subRepo, GroupRepository groupRepo, JavaMailSender sender) {
         this.subRepo = subRepo;
         this.groupRepo = groupRepo;
+        this.sender = sender;
 //        createSubs(100, groupRepo, subRepo);
     }
 
@@ -103,6 +111,17 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public List<Subscription> search(String name) {
         return subRepo.findAllByNameLikeIgnoreCase(name + "%");
+    }
+
+    @Override
+    public void sendMail(SubscriptionUser user) throws MessagingException {
+        MimeMessage mimeMessage = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+        String html = mailStart + user.getName() + mailEnd;
+        helper.setTo(user.getEmail());
+        helper.setSubject("Subscription tracker notification: Welcome!");
+        helper.setText(html, true);
+        sender.send(mimeMessage);
     }
 
     @Override
