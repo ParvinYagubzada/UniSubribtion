@@ -15,7 +15,7 @@ import java.util.List;
 @Service("userDetailsService")
 public class MyUserDetailsService implements UserDetailsService {
 
-    UserRepository repository;
+    private final UserRepository repository;
 
     public MyUserDetailsService(UserRepository dao) {
         this.repository = dao;

@@ -1,6 +1,6 @@
 package az.code.unisubribtion.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import az.code.unisubribtion.utils.DateUnit;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,9 +15,9 @@ import javax.persistence.*;
 public class Duration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    Long value;
+    private Long id;
+    private Long value;
     @Enumerated(EnumType.STRING)
-    DateUnit unit;
+    private DateUnit unit;
 }
 

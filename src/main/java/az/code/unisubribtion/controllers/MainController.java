@@ -2,12 +2,14 @@ package az.code.unisubribtion.controllers;
 
 import az.code.unisubribtion.dtos.GroupDTO;
 import az.code.unisubribtion.dtos.JsonSubDTO;
+import az.code.unisubribtion.dtos.SimpleUserDTO;
 import az.code.unisubribtion.dtos.UserDTO;
 import az.code.unisubribtion.exceptions.*;
 import az.code.unisubribtion.models.*;
 import az.code.unisubribtion.services.NotificationService;
 import az.code.unisubribtion.services.SubscriptionService;
 import az.code.unisubribtion.services.UserService;
+import az.code.unisubribtion.utils.Paging;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +26,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class MainController {
 
-    SubscriptionService subService;
-    UserService service;
-    NotificationService notService;
+    private final SubscriptionService subService;
+    private final UserService service;
+    private final NotificationService notService;
 
     public MainController(SubscriptionService subService, UserService service, NotificationService notService) {
         this.subService = subService;
@@ -209,7 +211,7 @@ public class MainController {
     }
 
     @PostMapping("/users/auth")
-    public UserDTO login(HttpServletRequest request, @RequestBody SimpleUser user) throws NoSuchAlgorithmException {
+    public UserDTO login(HttpServletRequest request, @RequestBody SimpleUserDTO user) throws NoSuchAlgorithmException {
         UserDTO userDTO = service.authUser(user.getUsername(), user.getPassword());
         if (userDTO != null) {
             request.getSession().setAttribute("userId", userDTO);

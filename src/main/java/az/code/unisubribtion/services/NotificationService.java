@@ -1,7 +1,7 @@
 package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.models.Notification;
-import az.code.unisubribtion.models.Paging;
+import az.code.unisubribtion.utils.Paging;
 import org.springframework.data.util.Pair;
 
 import java.util.List;

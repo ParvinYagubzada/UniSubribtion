@@ -1,4 +1,4 @@
-package az.code.unisubribtion.models;
+package az.code.unisubribtion.utils;
 
 public enum DateUnit {
     YEAR, MONTH, WEEK, DAY

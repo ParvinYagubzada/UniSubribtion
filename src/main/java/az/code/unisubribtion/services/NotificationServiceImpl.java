@@ -2,7 +2,7 @@ package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.exceptions.UserDoesNotExists;
 import az.code.unisubribtion.models.Notification;
-import az.code.unisubribtion.models.Paging;
+import az.code.unisubribtion.utils.Paging;
 import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.repositories.NotificationRepository;
@@ -28,10 +28,10 @@ import static az.code.unisubribtion.utils.Util.*;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
-    NotificationRepository notificationRepo;
-    SubscriptionRepository subRepo;
-    UserRepository userRepo;
-    final JavaMailSender sender;
+    private final NotificationRepository notificationRepo;
+    private final SubscriptionRepository subRepo;
+    private final UserRepository userRepo;
+    private final JavaMailSender sender;
 
     public NotificationServiceImpl(NotificationRepository notificationRepo, SubscriptionRepository subRepo, UserRepository userRepo, JavaMailSender sender) {
         this.notificationRepo = notificationRepo;
@@ -41,7 +41,6 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Scheduled(cron = "0 0 8 * * ?")
-//    @Scheduled(fixedRate = 50000)
     public void createNotifications() {
         List<Subscription> subscriptions = subRepo.findSubscriptionsByActiveTrueAndHasNotificationTrue();
         List<Notification> notifications = new LinkedList<>();
@@ -53,6 +52,7 @@ public class NotificationServiceImpl implements NotificationService {
                         .userId(subscription.getUserId())
                         .context("You have " + period + " days left you subscription payment.")
                         .subscriptionId(subscription.getId())
+                        .hasSeen(false)
                         .time(LocalDateTime.now())
                         .build();
                 if (period > 1) {

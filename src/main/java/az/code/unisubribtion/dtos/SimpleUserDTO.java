@@ -1,4 +1,4 @@
-package az.code.unisubribtion.models;
+package az.code.unisubribtion.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SimpleUser {
-    String username;
-    String password;
+public class SimpleUserDTO {
+    private String username;
+    private String password;
 }
