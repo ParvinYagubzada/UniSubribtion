@@ -2,12 +2,12 @@ package az.code.unisubribtion.services;
 
 import az.code.unisubribtion.exceptions.UserDoesNotExists;
 import az.code.unisubribtion.models.Notification;
-import az.code.unisubribtion.utils.Paging;
 import az.code.unisubribtion.models.Subscription;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.repositories.NotificationRepository;
 import az.code.unisubribtion.repositories.SubscriptionRepository;
 import az.code.unisubribtion.repositories.UserRepository;
+import az.code.unisubribtion.utils.Paging;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -115,5 +114,10 @@ public class NotificationServiceImpl implements NotificationService {
         mail.setSubject("Subscription tracker notification: " + notification.getName());
         mail.setText(notification.getContext());
         sender.send(mail);
+    }
+
+    @Override
+    public void setAllNotifications(Long userId) {
+        notificationRepo.getByUserIdAndHasSeenFalse(userId).forEach(notification -> notification.setHasSeen(true));
     }
 }
