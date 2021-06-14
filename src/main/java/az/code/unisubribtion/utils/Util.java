@@ -277,8 +277,8 @@ public class Util {
             "                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width: 600px;\">\n" +
             "                    <tr>\n" +
             "                        <td bgcolor=\"#FFECD1\" align=\"center\" style=\"padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;\">\n" +
-            "                            <h2 style=\"font-size: 20px; font-weight: 400; color: #111111; margin: 0;\">Need more help?</h2>\n" +
-            "                            <p style=\"margin: 0;\"><a href=\"#\" target=\"_blank\" style=\"color: #FFA73B;\">We&rsquo;re here to help you out</a></p>\n" +
+            "                            <h2 style=\"font-size: 20px; font-weight: 400; color: #111111; margin: 0;\">Let's begin to add subscriptions.</h2>\n" +
+            "                            <p style=\"margin: 0;\"><a href=\"http://localhost:3000\" target=\"_blank\" style=\"color: #FFA73B;\">LET'S GO</a></p>\n" +
             "                        </td>\n" +//TODO: Change href
             "                    </tr>\n" +
             "                </table>\n" +
