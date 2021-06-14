@@ -6,13 +6,8 @@ import az.code.unisubribtion.exceptions.LoginException;
 import az.code.unisubribtion.exceptions.UsernameAlreadyExists;
 import az.code.unisubribtion.models.SubscriptionUser;
 import az.code.unisubribtion.repositories.UserRepository;
-import com.github.javafaker.Faker;
-import org.apache.tomcat.jni.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.DatatypeConverter;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
@@ -40,14 +35,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO authUser(String username, String pass) {
-        SubscriptionUser user = repo.findUserByUsername(username);
-        if (user != null) {
-            if (username.equals(user.getUsername()) && pass.equals(user.getPassword())) {
-                return new UserDTO(repo.save(user.toBuilder()
-                        .password(user.getPassword())
-                        .build()
-                ));
-            }
+        SubscriptionUser user;
+        boolean response;
+        boolean mailOrUser = username.contains("@");
+        if (mailOrUser) {
+            user = repo.findUserByEmail(username);
+        } else {
+            user = repo.findUserByUsername(username);
+        }
+        if (user == null)
+            throw new LoginException();
+        String mailOrUsername = mailOrUser ? user.getEmail() : user.getUsername();
+        if (mailOrUser) {
+            response = mailOrUsername.equals(user.getEmail());
+        } else {
+            response = mailOrUsername.equals(user.getUsername());
+        }
+        if (response && pass.equals(user.getPassword())) {
+            return new UserDTO(repo.save(user.toBuilder()
+                    .password(user.getPassword())
+                    .build()
+            ));
         }
         throw new LoginException();
     }

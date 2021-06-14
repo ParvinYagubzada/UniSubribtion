@@ -230,7 +230,7 @@ public class MainController {
 
     @PostMapping("/users/auth")
     public UserDTO login(HttpServletRequest request, @RequestBody SimpleUserDTO user) throws NoSuchAlgorithmException {
-        UserDTO userDTO = service.authUser(user.getUsername(), user.getPassword());
+        UserDTO userDTO = service.authUser(user.getUsernameOrEmail(), user.getPassword());
         if (userDTO != null) {
             request.getSession().setAttribute("userId", userDTO);
             return userDTO;
