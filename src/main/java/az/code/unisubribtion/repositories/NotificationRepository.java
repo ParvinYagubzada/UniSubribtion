@@ -14,5 +14,5 @@ public interface NotificationRepository extends PagingAndSortingRepository<Notif
 
     Notification getNotificationByUserIdAndId(Long userId, Long id);
 
-    List<Notification> getByUserIdAndHasSeenFalse(Long id);
+    List<Notification> getByUserIdOrderByTime(Long id);
 }

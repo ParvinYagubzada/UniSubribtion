@@ -191,9 +191,18 @@ public class MainController {
     @GetMapping("/notifications/simple")
     public ResponseEntity<Pair<Long, List<Notification>>> getSimpleNotifications(
             @RequestParam Long userId,
-            @RequestParam Long limit
+            @RequestParam(defaultValue = "5") Long limit
     ) {
         return new ResponseEntity<>(notService.getSimpleNotifications(userId, limit), HttpStatus.OK);
+    }
+
+    @PostMapping("/notifications/simple/reset")
+    public ResponseEntity<String> setSingleSeen(
+            @RequestParam Long userId,
+            @RequestParam Long notfId
+    ) {
+        notService.setSingleNotification(userId, notfId);
+        return new ResponseEntity<>("Notification " + notfId + " has been rested.", HttpStatus.OK);
     }
 
     @PostMapping("/notifications/reset")

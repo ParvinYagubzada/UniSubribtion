@@ -49,7 +49,7 @@ public class NotificationServiceImpl implements NotificationService {
             if (period <= 5) {
                 Notification basic = Notification.builder()
                         .userId(subscription.getUserId())
-                        .context("You have " + period + " days left you subscription payment.")
+                        .context("You have " + period + " days left on your " + subscription.getName() + " subscription.")
                         .subscriptionId(subscription.getId())
                         .hasSeen(false)
                         .time(LocalDateTime.now())
@@ -78,7 +78,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Pair<Long, List<Notification>> getSimpleNotifications(Long userId, Long limit) {
-        List<Notification> notifications = notificationRepo.getByUserIdAndHasSeenFalse(userId);
+        List<Notification> notifications = notificationRepo.getByUserIdOrderByTime(userId);
         return Pair.of((long) notifications.size(), notifications.stream()
                 .sorted((base, second) -> -base.getTime().compareTo(second.getTime()))
                 .limit(limit)
@@ -119,9 +119,17 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void setAllNotifications(Long userId) {
         notificationRepo.saveAll(notificationRepo
-                .getByUserIdAndHasSeenFalse(userId)
+                .getByUserIdOrderByTime(userId)
                 .stream()
                 .peek(notification -> notification.setHasSeen(true))
                 .collect(Collectors.toList()));
+    }
+
+    public void setSingleNotification(Long userId, Long notfId) {
+        Optional<Notification> notification = notificationRepo.findById(notfId);
+        if (notification.isPresent()) {
+            notification.get().setHasSeen(true);
+            notificationRepo.save(notification.get());
+        }
     }
 }

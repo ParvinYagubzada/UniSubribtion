@@ -17,4 +17,6 @@ public interface NotificationService {
     void sendNotificationEmail(Notification notification);
 
     void setAllNotifications(Long userId);
+
+    void setSingleNotification(Long userId, Long notfId);
 }

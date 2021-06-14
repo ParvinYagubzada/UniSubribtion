@@ -128,11 +128,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public Subscription createSubscription(Long userId, JsonSubDTO jsonSub) {
         Subscription subscription = convertSub(jsonSub);
-        LocalDateTime last = subscription.getLastPaymentDay().plus(subscription
+        LocalDateTime next = subscription.getLastPaymentDay().plus(subscription
                         .getDuration()
                         .getValue(),
                         convertUnit(subscription.getDuration().getUnit()));
-        return subRepo.save(subscription.toBuilder().userId(userId).lastPaymentDay(last).build());
+        return subRepo.save(subscription.toBuilder().userId(userId).nextPaymentDay(next).build());
     }
 
     @Override
@@ -142,7 +142,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public Subscription updateSubscription(Long userId, Long subId, Subscription subscription) {
-        return subRepo.save(subscription.toBuilder().id(subId).userId(userId).build());
+        LocalDateTime next = subscription.getLastPaymentDay().plus(subscription
+                        .getDuration()
+                        .getValue(),
+                convertUnit(subscription.getDuration().getUnit()));
+        return subRepo.save(subscription.toBuilder().userId(userId).id(subId).nextPaymentDay(next).build());
     }
 
     @Override
